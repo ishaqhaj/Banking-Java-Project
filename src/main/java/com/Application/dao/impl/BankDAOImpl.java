@@ -113,6 +113,14 @@ public class BankDAOImpl implements BankDAO {
         }
         return null;
         }
+    public void closeConnection(){
+        try{
+            this.connection.close();
+        }
+        catch(SQLException e){
+            System.out.println("Erreur lors de la fermeture de la connexion: " + e.getMessage());
+        }
+    }
 
 }
 

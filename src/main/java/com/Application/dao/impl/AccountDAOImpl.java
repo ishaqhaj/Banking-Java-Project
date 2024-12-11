@@ -45,6 +45,14 @@ public class AccountDAOImpl implements AccountDAO {
             e.printStackTrace();
         }
     }
+    public void closeConnection(){
+        try{
+            this.connection.close();
+        }
+        catch(SQLException e){
+            System.out.println("Erreur lors de la fermeture de la connexion: " + e.getMessage());
+        }
+    }
 
 }
 

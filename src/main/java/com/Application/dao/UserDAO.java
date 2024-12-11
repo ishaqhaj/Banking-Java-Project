@@ -9,4 +9,5 @@ public interface UserDAO {
     public boolean isIdExist(String idValue) throws SQLException;
     public void insertUser(User user) throws SQLException;
     public boolean isUserIdUnique(String userId) throws SQLException;
+    public void closeConnection();
 }

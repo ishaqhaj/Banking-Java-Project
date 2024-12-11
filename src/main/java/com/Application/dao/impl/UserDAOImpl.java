@@ -67,5 +67,13 @@ public class UserDAOImpl implements UserDAO {
         resultSet.next();
         return resultSet.getInt(1) == 0; // Retourner true si l'ID est unique
     }
+    public void closeConnection(){
+        try{
+            this.connection.close();
+        }
+        catch(SQLException e){
+            System.out.println("Erreur lors de la fermeture de la connexion: " + e.getMessage());
+        }
+    }
 
 }

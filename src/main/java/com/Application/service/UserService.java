@@ -42,6 +42,9 @@ public class UserService {
             userDAO.insertUser(user);
             account.setOwner(user);
             accountDAO.insertAccount(account);
+            bankDAO.closeConnection();
+            accountDAO.closeConnection();
+            userDAO.closeConnection();
             return userId;
 
         } catch (SQLException e) {

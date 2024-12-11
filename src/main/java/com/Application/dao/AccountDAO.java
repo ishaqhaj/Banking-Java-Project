@@ -6,4 +6,5 @@ import java.util.Set;
 
 public interface AccountDAO {
     public void insertAccount(Account account);
+    public void closeConnection();
 }
