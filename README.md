@@ -1,3 +1,4 @@
+Structure du Projet et Processus d'Inscription : 
 Partie de l'inscription :
 Pour s'inscrire à l'application, l'utilisateur doit fournir les informations nécessaires conformément à la norme ISO 20022 :
 
