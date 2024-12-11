@@ -92,7 +92,7 @@ INSERT INTO `users` (`user_id`, `name`, `password`, `email`, `cin_or_passport`, 
 ('4GLWBO', 'Mochariq Ouidad', 'TTTTT', 'ouidadmochariq1@gmail.com', 'qqqqq', '', '', '', ''),
 ('N3IUR6', 'Alice Albert', '1111', 'ouidadmochariq1@gmail.com', 'youp', '', '', '', ''),
 ('NL9WFP', 'Manal Said', '7878', 'ouidadmochariq1@gmail.com', 'raj590', '', '', '', ''),
-('VG4UWW', 'Amal Nassiri', 'oooo', 'ouidadmochariq1@gmail.com', 'ymmm', '', '', '', ''),
+('VG4UWW', 'Amal Nassiri', 'oooo', 'ouidadmochariq1@gmail.com', 'ymmm', '', '', '', '');
 
 -- --------------------------------------------------------
 
