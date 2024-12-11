@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.Application.controller.SelectBeneficiaryAccount">
+   <children>
+      <AnchorPane fx:id="beneficiaryAccountContainer" prefHeight="300.0" prefWidth="550.0" style="-fx-background-color: ;">
+         <children>
+            <Text fx:id="instructionText" layoutX="100.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Veuillez sélectionner le compte du bénéficiaire:">
+               <font>
+                  <Font name="Arial Bold" size="16.0" />
+               </font>
+            </Text>
+            <Button layoutX="240.0" layoutY="235.0" mnemonicParsing="false" onAction="#handleSelection" style="-fx-background-color: #D4A017;" text="Suivant">
+               <font>
+                  <Font name="Arial Bold" size="16.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+   </children>
+</Pane>

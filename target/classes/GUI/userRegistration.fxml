@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="500.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.Application.controller.SignUp">
+   <children>
+      <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="500.0" style="-fx-background-color: #444444;">
+         <content>
+            <VBox prefHeight="668.0" prefWidth="534.0" style="-fx-background-color: #ffffff;">
+               <children>
+                  <AnchorPane prefHeight="101.0" prefWidth="500.0">
+                     <children>
+                        <Label layoutX="184.0" layoutY="37.0" text="Inscription">
+                           <font>
+                              <Font name="Arial Bold" size="23.0" />
+                           </font>
+                        </Label>
+                        <Text fill="GOLDENROD" layoutX="37.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Les champs marqués d'un * sont obligatoires">
+                           <font>
+                              <Font name="Arial Bold" size="16.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </AnchorPane>
+                  <HBox prefHeight="310.0" prefWidth="357.0">
+                     <VBox.margin>
+                        <Insets right="50.0" top="20.0" />
+                     </VBox.margin>
+                     <children>
+                        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="555.0" prefWidth="449.0">
+                           <children>
+                              <Label layoutX="-11.0" layoutY="31.0" text="Nom: *" textFill="GOLDENROD">
+                                 <font>
+                                    <Font name="Arial Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="nameField" layoutX="227.0" layoutY="27.0" prefHeight="25.0" prefWidth="202.0" promptText="Entrer votre nom" />
+                              <Label layoutX="-10.0" layoutY="68.0" text="Email: *" textFill="GOLDENROD">
+                                 <font>
+                                    <Font name="Arial Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="emailField" layoutX="227.0" layoutY="63.0" prefHeight="27.0" prefWidth="203.0" promptText="Entrer votre email" />
+                              <Label layoutX="-9.0" layoutY="109.0" text="Mot de passe: *" textFill="GOLDENROD">
+                                 <font>
+                                    <Font name="Arial Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="-9.0" layoutY="147.0" text="Confirmer votre mot de passe: *" textFill="GOLDENROD">
+                                 <font>
+                                    <Font name="Arial Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="-9.0" layoutY="186.0" text="CIN ou Passport: *" textFill="GOLDENROD">
+                                 <font>
+                                    <Font name="Arial Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <PasswordField fx:id="passwordField" layoutX="227.0" layoutY="103.0" prefHeight="27.0" prefWidth="202.0" promptText="Entrer votre mot de passe" />
+                              <PasswordField fx:id="confirmedField" layoutX="227.0" layoutY="141.0" prefHeight="27.0" prefWidth="202.0" promptText="Retaper votre mot de passe" />
+                              <TextField fx:id="idField" layoutX="227.0" layoutY="182.0" prefHeight="25.0" prefWidth="204.0" promptText="Entrer CIN ou Passport" />
+                              <Label layoutX="-9.0" layoutY="220.0" text="Adresse: ">
+                                 <font>
+                                    <Font name="Arial Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="-7.0" layoutY="296.0" text="Code postal: ">
+                                 <font>
+                                    <Font name="Arial Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="-4.0" layoutY="332.0" text="Pays: ">
+                                 <font>
+                                    <Font name="Arial Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="adresseField" layoutX="227.0" layoutY="216.0" prefHeight="25.0" prefWidth="203.0" promptText="Entrer votre adresse" />
+                              <TextField fx:id="cityField" layoutX="227.0" layoutY="254.0" prefHeight="25.0" prefWidth="202.0" promptText="Entrer votre ville" />
+                              <TextField fx:id="countryField" layoutX="229.0" layoutY="328.0" prefHeight="25.0" prefWidth="201.0" promptText="Entrer le pays" />
+                              <Label layoutX="-5.0" layoutY="368.0" text="Type de compte: ">
+                                 <font>
+                                    <Font name="Arial Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <ComboBox fx:id="accountTypeComboBox" layoutX="227.0" layoutY="364.0" prefHeight="25.0" prefWidth="204.0" promptText="Sélectionner le type de compte" />
+                              <Label layoutX="-5.0" layoutY="401.0" text="IBAN: *" textFill="GOLDENROD">
+                                 <font>
+                                    <Font name="Arial Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="ibanField" layoutX="226.0" layoutY="397.0" prefHeight="25.0" prefWidth="204.0" promptText="Entrer le numéro de votre compte" />
+                              <Label layoutX="-5.0" layoutY="434.0" text="Banque:  *" textFill="GOLDENROD">
+                                 <font>
+                                    <Font name="Arial Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="bankField" layoutX="226.0" layoutY="430.0" prefHeight="25.0" prefWidth="204.0" promptText="Entrer le nom de la banque" />
+                              <Label layoutX="-6.0" layoutY="466.0" text="Code BIC: *" textFill="GOLDENROD">
+                                 <font>
+                                    <Font name="Arial Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="bicField" layoutX="227.0" layoutY="462.0" prefHeight="17.0" prefWidth="204.0" promptText="Entrer le code BIC de la banque" />
+                              <Button layoutX="157.0" layoutY="502.0" mnemonicParsing="false" onAction="#createUser" style="-fx-background-color: #daa520;" text="S'inscrire">
+                                 <font>
+                                    <Font name="Arial Bold" size="17.0" />
+                                 </font>
+                              </Button>
+                              <Label layoutX="-7.0" layoutY="258.0" text="Ville: ">
+                                 <font>
+                                    <Font name="Arial Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="codePostalField" layoutX="229.0" layoutY="292.0" prefHeight="24.0" prefWidth="199.0" promptText="Entrer le code postal" />
+                           </children>
+                           <HBox.margin>
+                              <Insets left="35.0" />
+                           </HBox.margin>
+                        </AnchorPane>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </children>
+</VBox>
