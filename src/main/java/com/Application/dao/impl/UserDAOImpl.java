@@ -67,6 +67,47 @@ public class UserDAOImpl implements UserDAO {
         resultSet.next();
         return resultSet.getInt(1) == 0; // Retourner true si l'ID est unique
     }
+    public boolean authenticateUser(String userId, String password) {
+        Connection conn = null;
+        try {
+            conn = DatabaseConnection.getConnection();  // Obtenir la connexion à la base de données
+
+            // Requête SQL pour vérifier les identifiants de connexion
+            String sql = "SELECT * FROM users WHERE user_id = ? AND password = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1, userId);  // Utiliser l'ID unique (String)
+            preparedStatement.setString(2, password);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // Si un résultat est retourné, l'utilisateur est authentifié
+            return resultSet.next();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public  User getUser(String userId){
+
+        try {
+            Connection conn = DatabaseConnection.getConnection();
+            String query = "SELECT  name, password, email, cin_or_passport, address, city, postal_code, country FROM users WHERE user_id = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, userId);  // Utiliser l'ID unique (String)
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()) {
+                User user = new User(resultSet.getString("cin_or_passport"), userId, resultSet.getString("name"), resultSet.getString("password"), resultSet.getString("email"), resultSet.getString("address"), resultSet.getString("city"), resultSet.getString("postal_code"), resultSet.getString("country"));
+                return user;
+            }
+            return null;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
     public void closeConnection(){
         try{
             this.connection.close();

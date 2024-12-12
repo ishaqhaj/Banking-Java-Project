@@ -78,6 +78,9 @@ public class UserService {
         return userId.toString();
     }
 
-
+    public boolean authenticateUser(String userId, String password) {
+        // Utiliser le nouvel identifiant unique pour l'authentification
+        return userDAO.authenticateUser(userId, password);
+    }
 
 }
