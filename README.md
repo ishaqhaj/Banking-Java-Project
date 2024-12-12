@@ -29,5 +29,11 @@ Les autres champs sont facultatifs.
 
 Un identifiant unique sera automatiquement attribué à chaque utilisateur lors de son inscription.
 
+Finalement, le reçu d'inscription sera envoyé par email à l'utilisateur.
+
+2ème partie : L'authentification
+
+L'utilisateur pourra se connecter à l'application à l'aide de son identifiant unique, envoyé par email, et du mot de passe confirmé lors de l'inscription.
+
 
    
