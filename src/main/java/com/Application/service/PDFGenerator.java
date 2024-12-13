@@ -1,4 +1,4 @@
-package main.java.com.Application.service;
+package com.Application.service;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -28,7 +28,7 @@ public class PDFGenerator {
             document.add(new Paragraph("Ville: " + city));
             document.add(new Paragraph("Code postal: " + postalCode));
             document.add(new Paragraph("Pays: " + country));
-            document.add(new Paragraph("IBAN: " + accountNumber));
+            document.add(new Paragraph("Numéro de compte: " + accountNumber));
             document.add(new Paragraph("Type de compte: " + accountType));
             document.add(new Paragraph("Banque: " + bank));
             document.add(new Paragraph("Code BIC: " + bic));

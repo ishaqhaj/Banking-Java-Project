@@ -1,6 +1,6 @@
-package main.java.com.Application;
+package com.Application;
 
-import main.resources.GUI.MainApp;
+import com.Application.GUI.MainApp;
 
 public class App {
     public static void main(String[] args) {

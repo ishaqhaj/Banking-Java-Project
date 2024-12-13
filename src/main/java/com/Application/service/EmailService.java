@@ -1,4 +1,4 @@
-package main.java.com.Application.service;
+package com.Application.service;
 
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
@@ -16,7 +16,7 @@ public class EmailService {
 
     public void sendEmail(String toEmail, String uniqueId, String pdfPath) {
         String from = "khalidlakbir5@gmail.com";
-        String password = "ccmgfokjfhzfjwjh";      // Mot de passe d'application Gmail
+        String password = "ccmgfokjfhzfjwjh";       // Remplacez par votre mot de passe d'application Gmail
 
         // Configuration des propriétés SMTP
         Properties props = new Properties();

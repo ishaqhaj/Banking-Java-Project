@@ -1,8 +1,8 @@
-package main.java.com.Application.dao.impl;
+package com.Application.dao.impl;
 
-import main.java.com.Application.dao.BankDAO;
-import main.java.com.Application.model.Bank;
-import main.java.com.Application.util.DatabaseConnection;
+import com.Application.dao.BankDAO;
+import com.Application.model.Bank;
+import com.Application.util.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -121,7 +121,6 @@ public class BankDAOImpl implements BankDAO {
             System.out.println("Erreur lors de la fermeture de la connexion: " + e.getMessage());
         }
     }
-
 }
 
 

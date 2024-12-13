@@ -1,4 +1,4 @@
-package main.java.com.Application.model;
+package com.Application.model;
 
 public class Account {
     private String accountNumber; // Numéro de compte

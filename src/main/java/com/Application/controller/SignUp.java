@@ -1,13 +1,13 @@
-package main.java.com.Application.controller;
+package com.Application.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import main.java.com.Application.service.EmailService;
-import main.java.com.Application.service.PDFGenerator;
-import main.java.com.Application.service.UserService;
+import com.Application.service.EmailService;
+import com.Application.service.PDFGenerator;
+import com.Application.service.UserService;
 
 import java.math.BigDecimal;
 

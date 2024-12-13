@@ -1,7 +1,7 @@
-package main.java.com.Application.util;
+package com.Application.util;
 
-import main.java.com.Application.model.Account;
-import main.java.com.Application.model.User;
+import com.Application.model.Account;
+import com.Application.model.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +11,9 @@ public class SessionManager {
 
     // Gestion des données de session
     private User authenticatedUser;
-
+    private User selectedBeneficiary;
+    private Account selectedAccountBeneficiary;
+    private Account selectedAccount;
 
     // Gestion des contrôleurs
     private final Map<String, Object> controllers = new HashMap<>();
@@ -35,5 +37,48 @@ public class SessionManager {
         return authenticatedUser;
     }
 
+    public User getSelectedBeneficiary() {
+        return selectedBeneficiary;
+    }
 
+    public void setSelectedBeneficiary(User selectedBeneficiary) {
+        this.selectedBeneficiary = selectedBeneficiary;
+    }
+
+    // Gestion des comptes
+    public void setSelectedAccountBeneficiary(Account accountNumber) {
+        this.selectedAccountBeneficiary = accountNumber;
+    }
+
+    public Account getSelectedAccountBeneficiary() {
+        return selectedAccountBeneficiary;
+    }
+
+    public void setSelectedAccount(Account account) {
+        this.selectedAccount = account;
+    }
+
+    public Account getSelectedAccount() {
+        return this.selectedAccount;
+    }
+
+    // Gestion des contrôleurs
+    public void registerController(String name, Object controller) {
+        controllers.put(name, controller);
+    }
+
+    public Object getController(String name) {
+        return controllers.get(name);
+    }
+
+    public <T> T getController(String name, Class<T> type) {
+        Object controller = controllers.get(name);
+        if (type.isInstance(controller)) {
+            return type.cast(controller);
+        }
+        return null;
+    }
+    public void clear(){
+        this.instance=null;
+    }
 }

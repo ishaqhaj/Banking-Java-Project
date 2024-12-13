@@ -1,4 +1,4 @@
-package main.java.com.Application.util;
+package com.Application.util;
 
 import java.io.InputStream;
 import java.sql.Connection;

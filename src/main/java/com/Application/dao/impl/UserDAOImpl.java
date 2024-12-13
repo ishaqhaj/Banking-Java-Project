@@ -1,8 +1,8 @@
-package main.java.com.Application.dao.impl;
+package com.Application.dao.impl;
 
-import main.java.com.Application.dao.UserDAO;
-import main.java.com.Application.model.User;
-import main.java.com.Application.util.DatabaseConnection;
+import com.Application.dao.UserDAO;
+import com.Application.model.User;
+import com.Application.util.DatabaseConnection;
 
 
 import java.sql.Connection;
@@ -41,19 +41,24 @@ public class UserDAOImpl implements UserDAO {
     }
 
     // Méthode pour insérer un utilisateur dans la base de données
-    public void insertUser(User user) throws SQLException {
+    public void insertUser(User user){
         String query = "INSERT INTO users (user_id, name, password, email, cin_or_passport, address, city, postal_code, country) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, user.getUserId());
-        preparedStatement.setString(2, user.getName());
-        preparedStatement.setString(3, user.getPassword());
-        preparedStatement.setString(4, user.getEmail());
-        preparedStatement.setString(5, user.getIdValue());
-        preparedStatement.setString(6, user.getAddress());
-        preparedStatement.setString(7, user.getCity());
-        preparedStatement.setString(8, user.getPostalCode());
-        preparedStatement.setString(9, user.getCountry());
-        preparedStatement.executeUpdate();
+        try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, user.getUserId());
+            preparedStatement.setString(2, user.getName());
+            preparedStatement.setString(3, user.getPassword());
+            preparedStatement.setString(4, user.getEmail());
+            preparedStatement.setString(5, user.getIdValue());
+            preparedStatement.setString(6, user.getAddress());
+            preparedStatement.setString(7, user.getCity());
+            preparedStatement.setString(8, user.getPostalCode());
+            preparedStatement.setString(9, user.getCountry());
+            preparedStatement.executeUpdate();
+        }
+        catch(SQLException e){
+            System.out.println("Erreur lors de l'insertion de user dans la base de données: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
 
@@ -81,7 +86,7 @@ public class UserDAOImpl implements UserDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             // Si un résultat est retourné, l'utilisateur est authentifié
-            return resultSet.next();
+            return resultSet.next();  
 
         } catch (SQLException e) {
             e.printStackTrace();

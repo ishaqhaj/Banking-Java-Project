@@ -1,10 +1,10 @@
-package main.java.com.Application.dao.impl;
+package com.Application.dao.impl;
 
-import main.java.com.Application.dao.AccountDAO;
-import main.java.com.Application.dao.impl.BankDAOImpl;
-import main.java.com.Application.model.Account;
-import main.java.com.Application.model.Bank;
-import main.java.com.Application.util.DatabaseConnection;
+import com.Application.dao.AccountDAO;
+import com.Application.dao.impl.BankDAOImpl;
+import com.Application.model.Account;
+import com.Application.model.Bank;
+import com.Application.util.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -53,7 +53,6 @@ public class AccountDAOImpl implements AccountDAO {
             System.out.println("Erreur lors de la fermeture de la connexion: " + e.getMessage());
         }
     }
-
 }
 
 

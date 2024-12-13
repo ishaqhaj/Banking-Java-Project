@@ -1,6 +1,6 @@
-package main.java.com.Application.dao;
+package com.Application.dao;
 
-import main.java.com.Application.model.Bank;
+import com.Application.model.Bank;
 
 import java.sql.SQLException;
 

@@ -1,4 +1,4 @@
-package main.java.com.Application.controller;
+package com.Application.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,10 +8,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import main.java.com.Application.dao.impl.UserDAOImpl;
-import main.java.com.Application.model.User;
-import main.java.com.Application.service.UserService;
-import main.java.com.Application.util.SessionManager;
+import com.Application.dao.impl.UserDAOImpl;
+import com.Application.model.User;
+import com.Application.service.UserService;
+import com.Application.util.SessionManager;
 
 import java.io.IOException;
 
@@ -38,7 +38,7 @@ public class Login {
                 SessionManager.getInstance().setAuthenticatedUser(authenticatedUser);
                 closeWindow();
                 // Charger l'interface Accueil.fxml
-                /*try {
+                try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Accueil.fxml"));
                     Parent root = loader.load();
                     Stage stage = new Stage();
@@ -47,7 +47,10 @@ public class Login {
                     stage.show();
                 } catch (IOException e) {
                     e.printStackTrace();
-                }*/
+                }
+                /*Accueil accueil = new Accueil();
+                Stage accueilStage = new Stage();
+                accueil.start(accueilStage);*/
             }
         }
         else{

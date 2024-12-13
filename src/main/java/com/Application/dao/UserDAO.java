@@ -1,6 +1,6 @@
-package main.java.com.Application.dao;
+package com.Application.dao;
 
-import main.java.com.Application.model.User;
+import com.Application.model.User;
 
 import java.sql.SQLException;
 import java.util.Map;

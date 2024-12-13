@@ -1,4 +1,4 @@
-package main.java.com.Application.model;
+package com.Application.model;
 
 public class Bank {
     private String name; // Nom de la banque

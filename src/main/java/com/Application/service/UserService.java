@@ -1,14 +1,14 @@
-package main.java.com.Application.service;
+package com.Application.service;
 
 
 
 
-import main.java.com.Application.dao.impl.AccountDAOImpl;
-import main.java.com.Application.dao.impl.BankDAOImpl;
-import main.java.com.Application.dao.impl.UserDAOImpl;
-import main.java.com.Application.model.Account;
-import main.java.com.Application.model.Bank;
-import main.java.com.Application.model.User;
+import com.Application.dao.impl.AccountDAOImpl;
+import com.Application.dao.impl.BankDAOImpl;
+import com.Application.dao.impl.UserDAOImpl;
+import com.Application.model.Account;
+import com.Application.model.Bank;
+import com.Application.model.User;
 
 
 
@@ -77,10 +77,12 @@ public class UserService {
         }
         return userId.toString();
     }
-
     public boolean authenticateUser(String userId, String password) {
         // Utiliser le nouvel identifiant unique pour l'authentification
         return userDAO.authenticateUser(userId, password);
     }
 
+    public UserDAOImpl getUserDAO() {
+        return userDAO;
+    }
 }
