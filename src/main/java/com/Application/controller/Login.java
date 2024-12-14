@@ -34,7 +34,6 @@ public class Login {
             else {
                 UserDAOImpl userDAO = new UserDAOImpl();
                 User authenticatedUser=userDAO.getUser(userId);
-                System.out.println(authenticatedUser.getUserId());
                 SessionManager.getInstance().setAuthenticatedUser(authenticatedUser);
                 closeWindow();
                 // Charger l'interface Accueil.fxml

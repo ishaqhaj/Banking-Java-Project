@@ -35,13 +35,13 @@ public class Accueil {
         loadPage("/GUI/AddAccount.fxml");
     }
     @FXML
+    public void addBeneficiary() {
+        loadPage("/GUI/Addbeneficiary.fxml");
+    }
+    @FXML
     public void virementSimple() {
 
     }
-    @FXML
-    public void addBeneficiary() {
-    }
-
     public void loadPage(String fxmlFile) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));

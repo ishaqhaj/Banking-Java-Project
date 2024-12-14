@@ -7,9 +7,9 @@ import java.util.Properties;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
-    private static Connection connection;
+    private Connection connection;
 
-    public static Connection getConnection() throws SQLException {
+    public Connection getConnection() throws SQLException {
         if (connection == null || connection.isClosed()) {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");  // Charge le driver MySQL
@@ -23,11 +23,10 @@ public class DatabaseConnection {
         }
         return connection;
     }
-
-    public static void closeConnection() {
-        if (connection != null) {
+    public  void closeConnection() {
+        if (this.connection != null) {
             try {
-                connection.close();
+                this.connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

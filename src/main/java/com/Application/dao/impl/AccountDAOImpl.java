@@ -10,30 +10,23 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Set;
+
 
 
 public class AccountDAOImpl implements AccountDAO {
-    private Connection connection;
     private BankDAOImpl bankDAO;
-
     // Constructeur pour injecter BankDAO
     public AccountDAOImpl() {
-        try {
-            connection = DatabaseConnection.getConnection(); // Appel direct de la méthode statique
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
         this.bankDAO = new BankDAOImpl();
     }
 
     public void insertAccount(Account account)  {
-        try {
+        DatabaseConnection db=new DatabaseConnection();
+        try (Connection conn=db.getConnection()){
             // Obtenir l'ID de la banque
             Integer bankId = bankDAO.getBankId(account.getBank());
             String query = "INSERT INTO accounts (account_number, account_type, bank_id, user_id) VALUES (?, ?, ?, ?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, account.getAccountNumber());
             preparedStatement.setString(2, account.getAccountType());
             preparedStatement.setInt(3, bankId); // Utiliser l'ID de la banque
@@ -44,13 +37,51 @@ public class AccountDAOImpl implements AccountDAO {
             System.out.println("Erreur connexion lors de l'insertion des données dans la table accounts");
             e.printStackTrace();
         }
-    }
-    public void closeConnection(){
-        try{
-            this.connection.close();
+        finally{
+            db.closeConnection();
         }
-        catch(SQLException e){
-            System.out.println("Erreur lors de la fermeture de la connexion: " + e.getMessage());
+    }
+    public String findUserIdByAccountNumber(String accountNumber)  {
+        String query = "SELECT user_id FROM accounts WHERE account_number = ?";
+        DatabaseConnection db=new DatabaseConnection();
+        try (Connection conn = db.getConnection()){
+             PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, accountNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString("user_id");
+            }
+        }
+        catch(SQLException e) {
+            System.out.println("Erreur au niveau de la récupération de l'identifiant de l'utilisateur à partir du IBAN.");
+            return null;
+        }
+        finally {
+            db.closeConnection();
+        }
+        return null;
+    }
+    public Account getAccount(String accountNumber)  {
+        String query = "SELECT account_type,bank_id FROM accounts WHERE account_number = ?";
+        DatabaseConnection db=new DatabaseConnection();
+        try (Connection conn = db.getConnection();
+             PreparedStatement preparedStatement = conn.prepareStatement(query)){
+            preparedStatement.setString(1, accountNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                Bank bank = bankDAO.getBank(resultSet.getInt("bank_id"));
+                Account account = new Account(accountNumber, resultSet.getString("account_type"), bank);
+                return account;
+            }
+            return null;
+        }
+        catch (SQLException e) {
+            System.out.println("Erreur connexion");
+            e.printStackTrace();
+            return null;
+        }
+        finally{
+            db.closeConnection();
         }
     }
 }

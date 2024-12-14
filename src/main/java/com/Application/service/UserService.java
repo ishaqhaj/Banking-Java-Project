@@ -13,9 +13,8 @@ import com.Application.model.User;
 
 
 import java.sql.SQLException;
-import java.util.Map;
 import java.util.Random;
-import java.util.Set;
+
 
 public class UserService {
     private BankDAOImpl bankDAO;
@@ -42,9 +41,6 @@ public class UserService {
             userDAO.insertUser(user);
             account.setOwner(user);
             accountDAO.insertAccount(account);
-            bankDAO.closeConnection();
-            accountDAO.closeConnection();
-            userDAO.closeConnection();
             return userId;
 
         } catch (SQLException e) {
@@ -81,8 +77,21 @@ public class UserService {
         // Utiliser le nouvel identifiant unique pour l'authentification
         return userDAO.authenticateUser(userId, password);
     }
+    public boolean addBeneficiary(String userId, String beneficiaryName, String accountNumber)  {
+        // Trouver l'ID utilisateur correspondant au numéro de compte
+        String beneficiaryId = accountDAO.findUserIdByAccountNumber(accountNumber);
+        if (beneficiaryId == null) {
+            throw new IllegalArgumentException("Aucun utilisateur trouvé avec ce numéro de compte.");
+        }
 
-    public UserDAOImpl getUserDAO() {
-        return userDAO;
+        // Vérifier que les noms correspondent
+        String fetchedName = userDAO.getUserNameById(beneficiaryId);
+        if (!fetchedName.equals(beneficiaryName)) {
+            throw new IllegalArgumentException("Le nom ne correspond pas au compte donné.");
+        }
+
+        // Ajouter le bénéficiaire
+        return userDAO.addBeneficiary(userId, beneficiaryId);
     }
+
 }
