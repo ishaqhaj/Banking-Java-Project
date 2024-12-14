@@ -43,6 +43,13 @@ fonctionnalités :
       Cette amélioration permet désormais à l'utilisateur d'effectuer des transactions à partir du compte ajouté.
       Validation complète des IBANs pour garantir la conformité avec les règles du format international.
       Ajout de tests unitaires pour vérifier la validité des IBANs et le bon fonctionnement de la fonctionnalité.
+
+   Ajout de bénéficiaire : 
+   
+      Cette fonctionnalité permet d'enregistrer un bénéficiaire afin de pouvoir lui effectuer des transactions.
+      Pour ajouter un bénéficiaire, l'utilisateur doit renseigner les informations suivantes :
+         -Le nom complet du bénéficiaire.
+         -Son IBAN.
       
       
 
