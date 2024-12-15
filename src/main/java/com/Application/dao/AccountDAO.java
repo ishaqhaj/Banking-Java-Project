@@ -13,4 +13,5 @@ public interface AccountDAO {
     public Account getUserAccount(String userId);
     public Set<String> getUserAccounts(String userId);
     public boolean addBeneficiaryAccount(String iban,String beneficiaryIban);
+    public Map<String, String> getBeneficiaries(String iban);
 }

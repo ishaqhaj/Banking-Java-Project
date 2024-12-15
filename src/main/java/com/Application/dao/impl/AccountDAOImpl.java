@@ -179,6 +179,32 @@ public class AccountDAOImpl implements AccountDAO {
             db.closeConnection();
         }
     }
+    public Map<String, String> getBeneficiaries(String iban) {
+        Map<String, String> beneficiaries = new HashMap<>();
+        String query = "SELECT b.beneficiary_account AS BeneficiaryAccount, " +
+                "u.name AS BeneficiaryOwnerName " +
+                "FROM account_beneficiaries b " +
+                "INNER JOIN accounts a ON b.beneficiary_account = a.account_number " +
+                "INNER JOIN users u ON a.user_id = u.user_id " +
+                "WHERE b.user_account = ?;";
+        DatabaseConnection db = new DatabaseConnection();
+        try (Connection conn = db.getConnection()) {
+            try (PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+                preparedStatement.setString(1, iban);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        beneficiaries.put(resultSet.getString("BeneficiaryOwnerName"), resultSet.getString("BeneficiaryAccount"));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erreur lors de la récupération des bénéficiaires.");
+            e.printStackTrace();
+        } finally {
+            db.closeConnection();
+        }
+        return beneficiaries;
+    }
 }
 
 

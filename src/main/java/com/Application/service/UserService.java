@@ -95,6 +95,9 @@ public class UserService {
         // Ajouter le bénéficiaire
         return accountDAO.addBeneficiaryAccount(SelectedAccount.getAccountNumber(),accountNumber);
     }
+    public Map<String, String> getUserBeneficiaries(String iban) {
+        return accountDAO.getBeneficiaries(iban);
+    }
     public Set<String> getUserAccounts(String userId){
         return accountDAO.getUserAccounts(userId);
     }

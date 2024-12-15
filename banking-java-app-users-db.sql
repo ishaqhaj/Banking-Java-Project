@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 15, 2024 at 10:46 AM
+-- Generation Time: Dec 15, 2024 at 12:47 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -51,7 +51,6 @@ INSERT INTO `accounts` (`account_number`, `account_type`, `bank_id`, `user_id`) 
 ('MA64 2308 2544 5074 9211 0052 0004', NULL, 1, '0GMZQX'),
 ('MA64011519000001205000534921', NULL, 1, 'XL0BJN'),
 ('SA4420000001234567891234', NULL, 1, 'NL9WFP');
-
 -- --------------------------------------------------------
 
 --
@@ -128,7 +127,29 @@ INSERT INTO `users` (`user_id`, `name`, `password`, `email`, `cin_or_passport`, 
 ('XL0BJN', 'Mohammed Ali', 'uuuu', 'ouidadmochaqri1@gmail.com', 'pop123', '', '', '', '');
 
 
+-- --------------------------------------------------------
 
+--
+-- Table structure for table `virement`
+--
+
+CREATE TABLE `virement` (
+  `end_to_end_id` varchar(35) NOT NULL,
+  `debtor_account_number` varchar(34) NOT NULL,
+  `creditor_account_number` varchar(34) NOT NULL,
+  `amount` decimal(15,2) NOT NULL,
+  `currency` char(3) NOT NULL,
+  `timestamp` varchar(100) NOT NULL,
+  `motif` text DEFAULT NULL,
+  `type` varchar(50) NOT NULL,
+  `methode_paiement` varchar(4) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+
+--
+-- Indexes for dumped tables
+--
 
 --
 -- Indexes for table `accounts`
@@ -159,7 +180,13 @@ ALTER TABLE `users`
 
 
 
-
+--
+-- Indexes for table `virement`
+--
+ALTER TABLE `virement`
+  ADD PRIMARY KEY (`end_to_end_id`),
+  ADD KEY `fk_debtor_account` (`debtor_account_number`),
+  ADD KEY `fk_creditor_account` (`creditor_account_number`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -190,6 +217,14 @@ ALTER TABLE `account_beneficiaries`
   ADD CONSTRAINT `account_beneficiaries_ibfk_2` FOREIGN KEY (`beneficiary_account`) REFERENCES `accounts` (`account_number`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
+
+--
+-- Constraints for table `virement`
+--
+ALTER TABLE `virement`
+  ADD CONSTRAINT `fk_creditor_account` FOREIGN KEY (`creditor_account_number`) REFERENCES `accounts` (`account_number`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_debtor_account` FOREIGN KEY (`debtor_account_number`) REFERENCES `accounts` (`account_number`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -71,12 +71,28 @@ public class Accueil {
     }
     @FXML
     public void virementSimple() {
+        UserDAOImpl userDAO = new UserDAOImpl();
+        AccountDAOImpl accountDAO = new AccountDAOImpl();
+        User authenticatedUser = SessionManager.getInstance().getAuthenticatedUser();
 
+        if (!accountDAO.hasSingleAccount(authenticatedUser.getUserId())) {
+            loadPage("/GUI/SelectAccount.fxml");
+            return; // Arrêtez ici pour attendre que l'utilisateur sélectionne un compte
+        }
+
+        // Si l'utilisateur n'a qu'un seul compte, on le sélectionne automatiquement
+        Account userAccount = accountDAO.getUserAccount(authenticatedUser.getUserId());
+        SessionManager.getInstance().setSelectedAccount(userAccount);
+
+        navigateAfterAccountSelection();
     }
     public void navigateAfterAccountSelection() {
-
+        loadPage("/GUI/SelectBeneficiary.fxml");
     }
 
+    public void passerVirement(){
+        loadPage("/GUI/VirementSimple.fxml");
+    }
     public void loadPage(String fxmlFile) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));

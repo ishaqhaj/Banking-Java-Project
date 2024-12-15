@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.03">
+    <CstmrCdtTrfInitn>
+        <GrpHdr>
+            <MessageId>20241215Z1WYCOYE0R</MessageId>
+            <CreationDateTime>2024-12-15T13:03:26</CreationDateTime>
+            <NumberOfTransactions>1</NumberOfTransactions>
+            <ControlSum>6778888.0</ControlSum>
+            <InitgPty>
+                <Nm>Mochariq Ouidad</Nm>
+            </InitgPty>
+        </GrpHdr>
+        <PmtInf>
+            <PaymentMethod>TRF</PaymentMethod>
+            <Debtor>
+                <Nm>Mochariq Ouidad</Nm>
+            </Debtor>
+            <DebtorAccount>
+                <Id>
+                    <IBAN>AL35202111090000000001234567</IBAN>
+                </Id>
+            </DebtorAccount>
+            <DebtorAgent>
+                <BIC>MOROCCO11CI</BIC>
+            </DebtorAgent>
+            <Creditor>
+                <Nm>Amal Nassiri</Nm>
+            </Creditor>
+            <CreditorAccount>
+                <Id>
+                    <IBAN>FR7630004000031234567890143</IBAN>
+                </Id>
+            </CreditorAccount>
+            <CreditorAgent>
+                <BIC>MOROCCO11CI</BIC>
+            </CreditorAgent>
+            <InstructedAmount Currency="EUR">6778888,00</InstructedAmount>
+            <RemittanceInformation>
+                <Ustrd></Ustrd>
+            </RemittanceInformation>
+            <PaymentInformationId>PAY_4GLWBO_20241215130327_6271877e</PaymentInformationId>
+            <BatchBooking>false</BatchBooking>
+            <RequestedExecutionDate>2024-12-15T13:03:26</RequestedExecutionDate>
+            <InstructionId>INST_4GLWBO_20241215130327_107a415a</InstructionId>
+            <ChargeBearer>SLEV</ChargeBearer>
+            <EndToEndId>20241215Z1WYCOYE0R</EndToEndId>
+        </PmtInf>
+    </CstmrCdtTrfInitn>
+</Document>
