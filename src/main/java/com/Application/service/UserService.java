@@ -9,11 +9,13 @@ import com.Application.dao.impl.UserDAOImpl;
 import com.Application.model.Account;
 import com.Application.model.Bank;
 import com.Application.model.User;
-
+import com.Application.util.SessionManager;
 
 
 import java.sql.SQLException;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 
 public class UserService {
@@ -89,9 +91,11 @@ public class UserService {
         if (!fetchedName.equals(beneficiaryName)) {
             throw new IllegalArgumentException("Le nom ne correspond pas au compte donné.");
         }
-
+        Account SelectedAccount= SessionManager.getInstance().getSelectedAccount();
         // Ajouter le bénéficiaire
-        return userDAO.addBeneficiary(userId, beneficiaryId);
+        return accountDAO.addBeneficiaryAccount(SelectedAccount.getAccountNumber(),accountNumber);
     }
-
+    public Set<String> getUserAccounts(String userId){
+        return accountDAO.getUserAccounts(userId);
+    }
 }

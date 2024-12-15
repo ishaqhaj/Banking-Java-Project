@@ -11,6 +11,5 @@ public interface UserDAO {
     public boolean isUserIdUnique(String userId);
     public boolean authenticateUser(String userId, String password);
     public  User getUser(String userId);
-    public boolean addBeneficiary(String userId, String beneficiaryId);
     public String getUserNameById(String userId);
 }

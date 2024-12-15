@@ -48,7 +48,7 @@
                         <Font name="Arial Bold" size="15.0" />
                      </font>
                   </Button>
-                  <Button layoutX="312.0" layoutY="-2.0" mnemonicParsing="false" onAction="#addBeneficiary" prefHeight="37.0" prefWidth="179.0" style="-fx-background-color: #D4A017;" text="Ajouter un bénéficiare">
+                  <Button layoutX="312.0" layoutY="-2.0" mnemonicParsing="false" onAction="#selectAccount" prefHeight="37.0" prefWidth="179.0" style="-fx-background-color: #D4A017;" text="Ajouter un bénéficiare">
                      <font>
                         <Font name="Arial Bold" size="15.0" />
                      </font>

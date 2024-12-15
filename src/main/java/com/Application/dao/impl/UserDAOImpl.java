@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserDAOImpl implements UserDAO {
     // Méthode pour vérifier si le CIN ou le passeport existe déjà
@@ -121,28 +123,9 @@ public class UserDAOImpl implements UserDAO {
             db.closeConnection();
         }
     }
-    public boolean addBeneficiary(String userId, String beneficiaryId) {
-        String query = "INSERT INTO user_beneficiaries (user_id, beneficiary_id) VALUES (?, ?)";
-        DatabaseConnection db=new DatabaseConnection();
-        try (Connection conn=db.getConnection()){
-            PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setString(1, userId);
-            preparedStatement.setString(2, beneficiaryId);
-            preparedStatement.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            System.out.println("Erreur lors de l ajout du bénéficiare");
-            e.printStackTrace();
-            return false;
-        }
-        finally {
-            db.closeConnection();
-        }
-    }
-
-    public String getUserNameById(String userId)  {
+    public String getUserNameById(String userId) {
         String query = "SELECT name FROM users WHERE user_id = ?";
-        DatabaseConnection db=new DatabaseConnection();
+        DatabaseConnection db = new DatabaseConnection();
         try (Connection conn = db.getConnection();
              PreparedStatement preparedStatement = conn.prepareStatement(query)) {
             preparedStatement.setString(1, userId);
@@ -151,12 +134,10 @@ public class UserDAOImpl implements UserDAO {
                 return resultSet.getString("name");
             }
             return null;
-        }
-        catch(SQLException e) {
+        } catch (SQLException e) {
             System.out.println("Erreur de connexion lors de la récupération du nom de l'utilisateur à partir de son identifiant.");
             return null;
-        }
-        finally {
+        } finally {
             db.closeConnection();
         }
     }

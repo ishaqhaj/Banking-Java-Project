@@ -1,7 +1,6 @@
 package com.Application.dao.impl;
 
 import com.Application.dao.AccountDAO;
-import com.Application.dao.impl.BankDAOImpl;
 import com.Application.model.Account;
 import com.Application.model.Bank;
 import com.Application.util.DatabaseConnection;
@@ -10,7 +9,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 
 public class AccountDAOImpl implements AccountDAO {
@@ -81,6 +83,99 @@ public class AccountDAOImpl implements AccountDAO {
             return null;
         }
         finally{
+            db.closeConnection();
+        }
+    }
+    public boolean hasSingleAccount(String userId) {
+        String query = "SELECT COUNT(*) AS account_count FROM accounts WHERE user_id = ?";
+        DatabaseConnection db=new DatabaseConnection();
+        boolean hasSingleAccount = false;
+        try (Connection conn = db.getConnection();
+             PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+
+            preparedStatement.setString(1, userId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int count = resultSet.getInt("account_count");
+                hasSingleAccount = (count == 1); // True si un seul compte est trouvé
+            }
+            return hasSingleAccount;
+        }
+        catch (SQLException e) {
+            System.err.println("Erreur lors de la vérification des comptes pour userId : " + userId);
+            e.printStackTrace();
+            return hasSingleAccount;
+        }
+        finally{
+            db.closeConnection();
+        }
+    }
+    public Account getUserAccount(String userId) {
+        String query = "SELECT account_number FROM accounts WHERE user_id = ?";
+        DatabaseConnection db=new DatabaseConnection();
+        try (Connection conn = db.getConnection();
+             PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+
+            preparedStatement.setString(1, userId);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    Account account=getAccount(resultSet.getString("account_number"));
+                    return account;
+                }
+                return null;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erreur lors de la récupération des comptes pour userId : " + userId);
+            e.printStackTrace();
+            return null;
+        }
+        finally{
+            db.closeConnection();
+        }
+    }
+
+    public Set<String> getUserAccounts(String userId) {
+        Set<String> accountNumbers = new HashSet<>();
+        String query = "SELECT account_number FROM accounts WHERE user_id = ?";
+        DatabaseConnection db=new DatabaseConnection();
+        try (Connection conn = db.getConnection();
+             PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+
+            preparedStatement.setString(1, userId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                accountNumbers.add(resultSet.getString("account_number"));
+            }
+            return accountNumbers;
+        } catch (SQLException e) {
+            System.err.println("Erreur lors de la récupération des comptes pour userId : " + userId);
+            e.printStackTrace();
+            return accountNumbers;
+        }
+        finally{
+            db.closeConnection();
+        }
+
+    }
+    public boolean addBeneficiaryAccount(String iban,String beneficiaryIban){
+        String query = "INSERT INTO account_beneficiaries (user_account, beneficiary_account) VALUES (?, ?)";
+        DatabaseConnection db=new DatabaseConnection();
+        try (Connection conn=db.getConnection()){
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, iban);
+            preparedStatement.setString(2, beneficiaryIban);
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de l ajout du compte du bénéficiare");
+            e.printStackTrace();
+            return false;
+        }
+        finally {
             db.closeConnection();
         }
     }

@@ -1,5 +1,8 @@
 package com.Application.controller;
 
+import com.Application.dao.UserDAO;
+import com.Application.service.UserService;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
@@ -35,6 +38,34 @@ public class Accueil {
         loadPage("/GUI/AddAccount.fxml");
     }
     @FXML
+    public void selectAccount(ActionEvent event) {
+        UserService userService = new UserService();
+        User authenticatedUser = SessionManager.getInstance().getAuthenticatedUser();
+        AccountDAOImpl accountDAO = new AccountDAOImpl();
+        UserDAO userDAO = new UserDAOImpl();
+        if(accountDAO.hasSingleAccount(authenticatedUser.getUserId())){
+            SessionManager.getInstance().setSelectedAccount(accountDAO.getUserAccount(authenticatedUser.getUserId()));
+            addBeneficiary();
+        }
+        else{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/SelectAccount.fxml"));
+            try {
+                Pane selectAccountPane = loader.load();
+                SelectAccount selectAccountController = loader.getController();
+                // Définir la redirection personnalisée après sélection
+                selectAccountController.setOnAccountSelected(selectedAccount -> {
+                    // Rediriger vers l'ajout de bénéficiaire
+                    addBeneficiary();
+                });
+                // Charger le contenu dans la fenêtre principale
+                statiqueMainApp.setCenter(selectAccountPane);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
     public void addBeneficiary() {
         loadPage("/GUI/Addbeneficiary.fxml");
     }
@@ -42,6 +73,10 @@ public class Accueil {
     public void virementSimple() {
 
     }
+    public void navigateAfterAccountSelection() {
+
+    }
+
     public void loadPage(String fxmlFile) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
