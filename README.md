@@ -50,6 +50,26 @@ fonctionnalités :
       Pour ajouter un bénéficiaire, l'utilisateur doit renseigner les informations suivantes :
          -Le nom complet du bénéficiaire.
          -Son IBAN.
+
+   Passation de virements simples
+
+      Cette fonctionnalité permet à l'utilisateur d'effectuer un virement simple avec les options suivantes :  
+      
+      1. **Sélection de l'IBAN** :  
+         - L'utilisateur peut spécifier son propre IBAN s'il en possède plusieurs.
+      
+      2. **Choix du bénéficiaire** :  
+         - Recherche d'un bénéficiaire à l'aide de son IBAN.  
+         - Sélection d'un bénéficiaire déjà ajouté dans la liste des bénéficiaires.
+      
+      3. **Spécification des détails de la transaction** :  
+         - **Montant** : Doit être spécifié et est obligatoire.  
+         - **Devise** : Doit être spécifiée pour la transaction.  
+         - **Motif du virement** : Optionnel, mais peut être précisé.  
+         - **Méthode de paiement** : Optionnelle, à choisir selon les préférences.  
+      
+      Cette fonctionnalité garantit que toutes les transactions respectent les exigences obligatoires (montant et devise) et offrent une flexibilité avec des options supplémentaires            (motif et méthode de paiement).  
+
       
       
 
