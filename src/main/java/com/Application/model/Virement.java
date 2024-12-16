@@ -34,7 +34,15 @@ public class Virement {
         this.payMethod=payMethod;
         this.type=type;
     }
-
+    public Virement(String timestamp,Account creditorAccount,BigDecimal amount,String currency,String motif,String type,String payMethod) {
+        this.timestamp=timestamp;
+        this.creditorAccount=creditorAccount;
+        this.amount=amount;
+        this.currency=currency;
+        this.motif=motif;
+        this.type=type;
+        this.payMethod=payMethod;
+    }
     public void setEndToEndId(){
         while (true){
             this.endToEndId=generateEndToEndId();
@@ -67,6 +75,15 @@ public class Virement {
         }
 
         return result.toString();
+    }
+
+    public String getFormattedAmount() {
+        String currencySymbol = switch (currency) {
+            case "USD" -> "$";
+            case "EUR" -> "£";
+            default -> "DH";
+        };
+        return String.format("%.2f %s", amount, currencySymbol);
     }
 
     public BigDecimal getAmount() {

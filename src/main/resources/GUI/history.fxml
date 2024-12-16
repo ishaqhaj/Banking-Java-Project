@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.Application.controller.History">
+   <children>
+      <AnchorPane layoutY="40.0" prefHeight="260.0" prefWidth="550.0">
+         <children>
+            <TableView fx:id="virementTableView" layoutY="-10.0" prefHeight="193.0" prefWidth="550.0">
+              <columns>
+                <TableColumn fx:id="Datecolumn" prefWidth="125.0" text="Date" />
+                <TableColumn fx:id="destinataireColumn" prefWidth="125.0" text="Bénéficiaire" />
+                  <TableColumn fx:id="montantColumn" prefWidth="115.0" text="Montant" />
+                  <TableColumn fx:id="typeVirementColumn" prefWidth="75.0" text="Type" />
+                  <TableColumn fx:id="motifColumn" prefWidth="185.0" text="Motif" />
+              </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
+      <Label layoutX="195.0" text="Paiements récents  : " textFill="#d4a017">
+         <font>
+            <Font name="Arial Bold" size="16.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>

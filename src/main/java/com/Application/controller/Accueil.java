@@ -1,10 +1,13 @@
 package com.Application.controller;
 
 import com.Application.dao.UserDAO;
+import com.Application.model.Virement;
 import com.Application.service.UserService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import com.Application.dao.impl.AccountDAOImpl;
@@ -16,6 +19,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Map;
 
 public class Accueil {
@@ -31,6 +35,7 @@ public class Accueil {
         // Initialisation manuelle de la variable statique
         statiqueMainApp = mainPane;
         SessionManager.getInstance().registerController("Accueil", this);
+        loadPage("/GUI/history.fxml");
     }
     @FXML
     public void addAccount() {
@@ -109,5 +114,7 @@ public class Accueil {
             e.printStackTrace();
         }
     }
-
+    public void loadHistory(ActionEvent event){
+        loadPage("/GUI/history.fxml");
+    }
 }

@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VirementDAOImpl implements VirementDAO {
 // Vérifie si un end_to_end_id existe déjà
@@ -60,5 +62,49 @@ public boolean isEndToEndIdUnique(String endToEndId) {
         finally{
             db.closeConnection();
         }
+    }
+    public List<Virement> getVirementsByUserId(String userId) {
+        String query = """
+                SELECT v.end_to_end_id, 
+                       v.debtor_account_number, 
+                       v.creditor_account_number, 
+                       v.amount, 
+                       v.currency, 
+                       v.timestamp, 
+                       v.motif, 
+                       v.type,
+                       v.methode_paiement
+                FROM virement v
+                INNER JOIN accounts a ON v.debtor_account_number = a.account_number
+                WHERE a.user_id = ?
+                ORDER BY v.timestamp DESC
+                LIMIT 10;
+                """;
+        List<Virement> virements = new ArrayList<>();
+        DatabaseConnection db = new DatabaseConnection();
+
+        try (Connection conn = db.getConnection();
+             PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+
+            // Set the userId parameter in the query
+            preparedStatement.setString(1, userId);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                AccountDAOImpl accountDAO=new AccountDAOImpl();
+                // Process the result set and create Virement objects
+                while (resultSet.next()) {
+                    Virement virement = new Virement(resultSet.getString("timestamp"),accountDAO.getAccount(resultSet.getString("creditor_account_number")),resultSet.getBigDecimal("amount"),resultSet.getString("currency"),resultSet.getString("motif"),resultSet.getString("type"),resultSet.getString("methode_paiement"));
+                    virements.add(virement);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erreur lors de la récupération des virements de l'utilsateur courant.");
+            e.printStackTrace();
+        } finally {
+            db.closeConnection();
+        }
+
+        return virements;
     }
 }

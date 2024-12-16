@@ -15,7 +15,7 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="500.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.Application.controller.SignUp">
    <children>
-      <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="500.0" style="-fx-background-color: #444444;">
+      <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="500.0" style="-fx-background-color: #444444;">
          <content>
             <VBox prefHeight="668.0" prefWidth="534.0" style="-fx-background-color: #ffffff;">
                <children>
@@ -87,7 +87,6 @@
                               </Label>
                               <TextField fx:id="adresseField" layoutX="227.0" layoutY="216.0" prefHeight="25.0" prefWidth="203.0" promptText="Entrer votre adresse" />
                               <TextField fx:id="cityField" layoutX="227.0" layoutY="254.0" prefHeight="25.0" prefWidth="202.0" promptText="Entrer votre ville" />
-                              <TextField fx:id="countryField" layoutX="229.0" layoutY="328.0" prefHeight="25.0" prefWidth="201.0" promptText="Entrer le pays" />
                               <Label layoutX="-5.0" layoutY="368.0" text="Type de compte: ">
                                  <font>
                                     <Font name="Arial Bold" size="15.0" />
@@ -112,7 +111,7 @@
                                  </font>
                               </Label>
                               <TextField fx:id="bicField" layoutX="227.0" layoutY="462.0" prefHeight="17.0" prefWidth="204.0" promptText="Entrer le code BIC de la banque" />
-                              <Button layoutX="157.0" layoutY="502.0" mnemonicParsing="false" onAction="#createUser" style="-fx-background-color: #daa520;" text="S'inscrire">
+                              <Button layoutX="157.0" layoutY="502.0" mnemonicParsing="false" onAction="#createUser" style="-fx-background-color: #daa520; -fx-cursor: hand;" text="S'inscrire">
                                  <font>
                                     <Font name="Arial Bold" size="17.0" />
                                  </font>
@@ -123,6 +122,7 @@
                                  </font>
                               </Label>
                               <TextField fx:id="codePostalField" layoutX="229.0" layoutY="292.0" prefHeight="24.0" prefWidth="199.0" promptText="Entrer le code postal" />
+                              <ComboBox fx:id="countryComboBox" layoutX="228.0" layoutY="328.0" prefHeight="25.0" prefWidth="201.0" promptText="Sélectionner votre pays" />
                            </children>
                            <HBox.margin>
                               <Insets left="35.0" />

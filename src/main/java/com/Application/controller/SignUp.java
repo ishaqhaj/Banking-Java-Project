@@ -29,7 +29,7 @@ public class SignUp {
     @FXML
     private TextField codePostalField;
     @FXML
-    private TextField countryField;
+    private ComboBox<String> countryComboBox;
     @FXML
     private ComboBox<String> accountTypeComboBox;
     @FXML
@@ -48,6 +48,51 @@ public class SignUp {
                 "LOAN : Compte de prêt",
                 "MGLD : Compte de métaux précieux"
         );
+        countryComboBox.getItems().addAll(
+                "MA : Maroc",
+                "DE : Allemagne",
+                "AT : Autriche",
+                "BE : Belgique",
+                "CY : Chypre",
+                "HR : Croatie",
+                "ES : Espagne",
+                "EE : Estonie",
+                "FI : Finlande",
+                "FR : France",
+                "GR : Grèce",
+                "IE : Irlande",
+                "IT : Italie",
+                "LV : Lettonie",
+                "LT : Lituanie",
+                "LU : Luxembourg",
+                "MT : Malte",
+                "NL : Pays-Bas",
+                "PT : Portugal",
+                "SK : Slovaquie",
+                "SI : Slovénie",
+                "AD : Andorre",
+                "MC : Monaco",
+                "VA : Vatican",
+                "XK : Kosovo",
+                "ME : Monténégro",
+                "SM : Saint-Marin",
+                "US : États-Unis",
+                "EC : Équateur",
+                "SV : Salvador",
+                "PA : Panama",
+                "TL : Timor oriental",
+                "ZW : Zimbabwe",
+                "FM : Micronésie",
+                "MH : Îles Marshall",
+                "PW : Palau",
+                "TC : Îles Turques-et-Caïques",
+                "KY : Îles Caïmans",
+                "VG : Îles Vierges britanniques",
+                "VI : Îles Vierges américaines",
+                "GU : Guam",
+                "AS : Samoa américaines",
+                "PR : Porto Rico"
+        );
     }
     public void createUser() {
         String name = nameField.getText();
@@ -58,9 +103,11 @@ public class SignUp {
         String address = adresseField.getText();
         String city = cityField.getText();
         String postalCode = codePostalField.getText();
-        String country = countryField.getText();
+        String country = countryComboBox.getValue();
         String accountNumber = ibanField.getText();
         String selectedAccountType = accountTypeComboBox.getValue();
+        if(country!=null)
+            country = country.substring(0, 2);
         if(selectedAccountType!=null)
             selectedAccountType = selectedAccountType.substring(0, 4);
         String bank = bankField.getText();

@@ -30,7 +30,7 @@
                </font>
             </Label>
             <ComboBox fx:id="accountTypeComboBox" layoutX="292.0" layoutY="104.0" prefHeight="25.0" prefWidth="200.0" promptText="Sélectionnez le type de compte" />
-            <Button layoutX="232.0" layoutY="249.0" mnemonicParsing="false" onAction="#addAccount" style="-fx-background-color: #d4a017;" text="Ajouter">
+            <Button layoutX="232.0" layoutY="249.0" mnemonicParsing="false" onAction="#addAccount" style="-fx-background-color: #d4a017; -fx-cursor: hand;" text="Ajouter">
                <font>
                   <Font name="Arial Bold" size="15.0" />
                </font>
