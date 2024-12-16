@@ -35,6 +35,26 @@ Structure du Projet et Processus d'Inscription :
 
    L'utilisateur pourra se connecter à l'application à l'aide de son identifiant unique, envoyé par email, et du mot de passe confirmé lors de l'inscription.
 
+Interface d'accueil
+
+L'interface d'accueil permet à l'utilisateur de consulter les 10 derniers virements effectués.  
+
+   Fonctionnalités principales :
+      1. **Affichage des virements récents** :  
+         - Les virements sont listés en ordre décroissant (du plus récent au plus ancien).  
+         - Les détails affichés pour chaque virement incluent :  
+           - **Date** de la transaction.  
+           - **Bénéficiaire**.  
+           - **Montant**.  
+           - **Type de virement**.  
+           - **Motif** de la transaction.  
+
+      2. **Navigation vers l'historique** :  
+         - L'utilisateur peut revenir à tout moment à cette interface en cliquant sur le bouton **Historique**.  
+
+Cette interface offre une vue rapide et détaillée des transactions les plus récentes pour une gestion simplifiée et efficace.  
+
+
 fonctionnalités :
 
    Ajout de compte :
