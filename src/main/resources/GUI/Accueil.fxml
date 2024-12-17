@@ -23,7 +23,7 @@
                         <Font name="Arial Bold" size="14.0" />
                      </font>
                   </Button>
-                  <Button layoutY="63.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="147.0" style="-fx-background-color: #D4A017; -fx-cursor: hand;" text="Virement multiple">
+                  <Button layoutY="63.0" mnemonicParsing="false" onAction="#virementMultiple" prefHeight="32.0" prefWidth="147.0" style="-fx-background-color: #D4A017; -fx-cursor: hand;" text="Virement multiple">
                      <font>
                         <Font name="Arial Bold" size="14.0" />
                      </font>

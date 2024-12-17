@@ -2,8 +2,11 @@ package com.Application.util;
 
 import com.Application.model.Account;
 import com.Application.model.User;
+import com.Application.model.Virement;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SessionManager {
@@ -14,11 +17,12 @@ public class SessionManager {
     private User selectedBeneficiary;
     private Account selectedAccountBeneficiary;
     private Account selectedAccount;
-
     // Gestion des contrôleurs
     private final Map<String, Object> controllers = new HashMap<>();
-
-    private SessionManager() {}
+    private List<Virement> virements;
+    private SessionManager() {
+        this.virements = new ArrayList<>();
+    }
 
     // Singleton pour obtenir l'instance unique de SessionManager
     public static SessionManager getInstance() {
@@ -77,6 +81,12 @@ public class SessionManager {
             return type.cast(controller);
         }
         return null;
+    }
+    public void setVirements(List<Virement> virements){
+        this.virements = virements;
+    }
+    public List<Virement> getVirements(){
+        return this.virements;
     }
     public void clear(){
         this.instance=null;

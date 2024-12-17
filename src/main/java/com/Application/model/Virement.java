@@ -5,7 +5,7 @@ import com.Application.util.SessionManager;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Random;
@@ -26,10 +26,21 @@ public class Virement {
         this.creditorAccount= SessionManager.getInstance().getSelectedAccountBeneficiary();
         this.amount = amount;
         this.currency=currency;
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-        // Convertir LocalDateTime en String
-        this.timestamp= currentDateTime.format(formatter);
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        // Formater la date en chaîne
+        this.timestamp= currentDate.format(formatter);
+        this.motif=motif;
+        this.payMethod=payMethod;
+        this.type=type;
+    }
+    public Virement(String timestamp,BigDecimal amount,String currency,String motif,String type,String payMethod) {
+        this.setEndToEndId();
+        this.debtorAccount= SessionManager.getInstance().getSelectedAccount();
+        this.creditorAccount= SessionManager.getInstance().getSelectedAccountBeneficiary();
+        this.amount = amount;
+        this.currency=currency;
+        this.timestamp= timestamp;
         this.motif=motif;
         this.payMethod=payMethod;
         this.type=type;

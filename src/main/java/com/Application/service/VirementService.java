@@ -15,4 +15,8 @@ public class VirementService {
         VirementDAOImpl virementDAO = new VirementDAOImpl();
         return virementDAO.getVirementsByUserId(userId);
     }
+    public void insertVirements(List<Virement> virements){
+        VirementDAOImpl virementDAO = new VirementDAOImpl();
+        virementDAO.insertVirements(virements);
+    }
 }

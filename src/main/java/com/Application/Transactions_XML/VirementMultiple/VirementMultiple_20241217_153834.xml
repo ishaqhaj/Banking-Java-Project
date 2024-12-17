@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.03">
+    <CstmrCdtTrfInitn>
+        <GrpHdr>
+            <MessageId>MSG_20241217153833_31596c77</MessageId>
+            <CreationDateTime>2024-12-17T15:38:33</CreationDateTime>
+            <NumberOfTransactions>3</NumberOfTransactions>
+            <ControlSum>970130.00</ControlSum>
+            <InitgPty>
+                <Nm>Manal Said</Nm>
+            </InitgPty>
+        </GrpHdr>
+        <PmtInf>
+            <PaymentMethod>TRF</PaymentMethod>
+            <Debtor>
+                <Nm>Manal Said</Nm>
+            </Debtor>
+            <DebtorAccount>
+                <Id>
+                    <IBAN>SA4420000001234567891234</IBAN>
+                </Id>
+            </DebtorAccount>
+            <Creditor>
+                <Nm>Malak Roudani</Nm>
+            </Creditor>
+            <CreditorAccount>
+                <Id>
+                    <IBAN>BE71096123456769</IBAN>
+                </Id>
+            </CreditorAccount>
+            <InstructedAmount Currency="EUR">456676.00</InstructedAmount>
+            <RemittanceInformation>
+                <Ustrd></Ustrd>
+            </RemittanceInformation>
+            <PaymentInformationId>PAY_NL9WFP_20241217153833_62ca5d98</PaymentInformationId>
+            <BatchBooking>false</BatchBooking>
+            <RequestedExecutionDate>2024-12-14</RequestedExecutionDate>
+            <InstructionId>INST_NL9WFP_20241217153833_490a7778</InstructionId>
+            <ChargeBearer>SLEV</ChargeBearer>
+            <EndToEndId>20241217X9NZH8KHEK</EndToEndId>
+        </PmtInf>
+        <PmtInf>
+            <PaymentMethod>TRF</PaymentMethod>
+            <Debtor>
+                <Nm>Manal Said</Nm>
+            </Debtor>
+            <DebtorAccount>
+                <Id>
+                    <IBAN>SA4420000001234567891234</IBAN>
+                </Id>
+            </DebtorAccount>
+            <Creditor>
+                <Nm>Fouad Samid</Nm>
+            </Creditor>
+            <CreditorAccount>
+                <Id>
+                    <IBAN>BH02CITI00001077181611</IBAN>
+                </Id>
+            </CreditorAccount>
+            <InstructedAmount Currency="MAD">456677.00</InstructedAmount>
+            <RemittanceInformation>
+                <Ustrd></Ustrd>
+            </RemittanceInformation>
+            <PaymentInformationId>PAY_NL9WFP_20241217153833_2f6b05e8</PaymentInformationId>
+            <BatchBooking>false</BatchBooking>
+            <RequestedExecutionDate>2024-12-17</RequestedExecutionDate>
+            <InstructionId>INST_NL9WFP_20241217153833_bc412934</InstructionId>
+            <ChargeBearer>SLEV</ChargeBearer>
+            <EndToEndId>20241217QNCW7ZR6FE</EndToEndId>
+        </PmtInf>
+        <PmtInf>
+            <PaymentMethod>TRF</PaymentMethod>
+            <Debtor>
+                <Nm>Manal Said</Nm>
+            </Debtor>
+            <DebtorAccount>
+                <Id>
+                    <IBAN>SA4420000001234567891234</IBAN>
+                </Id>
+            </DebtorAccount>
+            <Creditor>
+                <Nm>Fouad Samid</Nm>
+            </Creditor>
+            <CreditorAccount>
+                <Id>
+                    <IBAN>CR23015108410026012345</IBAN>
+                </Id>
+            </CreditorAccount>
+            <InstructedAmount Currency="MAD">56777.00</InstructedAmount>
+            <RemittanceInformation>
+                <Ustrd></Ustrd>
+            </RemittanceInformation>
+            <PaymentInformationId>PAY_NL9WFP_20241217153833_84cb8e8f</PaymentInformationId>
+            <BatchBooking>false</BatchBooking>
+            <RequestedExecutionDate>2024-12-17</RequestedExecutionDate>
+            <InstructionId>INST_NL9WFP_20241217153833_8f855c5b</InstructionId>
+            <ChargeBearer>SLEV</ChargeBearer>
+            <EndToEndId>20241217WB9A696TV6</EndToEndId>
+        </PmtInf>
+    </CstmrCdtTrfInitn>
+</Document>

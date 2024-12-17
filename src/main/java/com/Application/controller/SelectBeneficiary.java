@@ -15,6 +15,7 @@ import com.Application.service.UserService;
 import com.Application.util.SessionManager;
 
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class SelectBeneficiary {
     @FXML
@@ -25,6 +26,9 @@ public class SelectBeneficiary {
     private TextField searchField; // A VBox in your FXML to contain the radio buttons.
 
     private ToggleGroup group;
+
+    // Champ pour stocker l'action de redirection
+    private Consumer<User> redirection;
 
     @FXML
     public void initialize() {
@@ -64,6 +68,10 @@ public class SelectBeneficiary {
         }
     }
 
+    public void setRedirection(Consumer<User> redirection) {
+        this.redirection = redirection;
+    }
+
     @FXML
     public void handleSearch(ActionEvent event){
         String iban=searchField.getText().trim();
@@ -76,8 +84,13 @@ public class SelectBeneficiary {
             SessionManager.getInstance().setSelectedAccountBeneficiary(accountDAO.getAccount(iban));
             Account selectedAccount=SessionManager.getInstance().getSelectedAccount();
             boolean success= accountDAO.addBeneficiaryAccount(selectedAccount.getAccountNumber(),iban);
-            Accueil accueilController = (Accueil) SessionManager.getInstance().getController("Accueil");
-            accueilController.passerVirement();
+            if (redirection != null) {
+                redirection.accept(beneficiary); // Exécute la redirection
+            }
+            else{
+                Accueil accueilController = (Accueil) SessionManager.getInstance().getController("Accueil");
+                accueilController.passerVirementSimple();
+            }
         }
         else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -104,8 +117,14 @@ public class SelectBeneficiary {
             SessionManager.getInstance().setSelectedBeneficiary(SelectedBeneficiary);
             Account beneficiaryAccount=accountDAO.getAccount(beneficiaryIBAN);
             SessionManager.getInstance().setSelectedAccountBeneficiary(beneficiaryAccount);
-            Accueil accueilController = (Accueil) SessionManager.getInstance().getController("Accueil");
-            accueilController.passerVirement();
+            if (redirection != null) {
+                redirection.accept(userDAO.getUser(beneficiaryId)); // Exécute la redirection
+            }
+            else{
+                Accueil accueilController = (Accueil) SessionManager.getInstance().getController("Accueil");
+                accueilController.passerVirementSimple();
+            }
+
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Sélection requise");

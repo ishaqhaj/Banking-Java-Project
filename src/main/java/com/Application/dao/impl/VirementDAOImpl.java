@@ -63,6 +63,62 @@ public boolean isEndToEndIdUnique(String endToEndId) {
             db.closeConnection();
         }
     }
+    public void insertVirements(List<Virement> virements) {
+        String query = "INSERT INTO virement (end_to_end_id, debtor_account_number, creditor_account_number, amount, currency, timestamp, motif, type, methode_paiement) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        DatabaseConnection db = new DatabaseConnection();
+        Connection conn = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            conn = db.getConnection();
+            conn.setAutoCommit(false); // Désactiver l'auto-commit pour une transaction manuelle
+            preparedStatement = conn.prepareStatement(query);
+
+            for (Virement virement : virements) {
+                preparedStatement.setString(1, virement.getEndToEndId());
+                preparedStatement.setString(2, virement.getDebtorAccount().getAccountNumber());
+                preparedStatement.setString(3, virement.getCreditorAccount().getAccountNumber());
+                preparedStatement.setBigDecimal(4, virement.getAmount());
+                preparedStatement.setString(5, virement.getCurrency());
+                preparedStatement.setString(6, virement.getTimestamp());
+                preparedStatement.setString(7, virement.getMotif());
+                preparedStatement.setString(8, virement.getType());
+                preparedStatement.setString(9, virement.getPayMethod());
+                preparedStatement.addBatch(); // Ajouter l'instruction dans le batch
+            }
+
+            preparedStatement.executeBatch(); // Exécuter le batch
+            conn.commit(); // Valider les changements
+        } catch (SQLException e) {
+            // Gestion des erreurs et rollback en cas de problème
+            if (conn != null) {
+                try {
+                    conn.rollback(); // Annuler les changements en cas d'erreur
+                } catch (SQLException rollbackEx) {
+                    System.err.println("Erreur lors du rollback : " + rollbackEx.getMessage());
+                }
+            }
+            System.err.println("Erreur lors de l'insertion des virements : " + e.getMessage());
+        } finally {
+            // Fermeture des ressources
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    System.err.println("Erreur lors de la fermeture du PreparedStatement : " + e.getMessage());
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    System.err.println("Erreur lors de la fermeture de la connexion : " + e.getMessage());
+                }
+            }
+        }
+    }
+
     public List<Virement> getVirementsByUserId(String userId) {
         String query = """
                 SELECT v.end_to_end_id, 
@@ -107,4 +163,5 @@ public boolean isEndToEndIdUnique(String endToEndId) {
 
         return virements;
     }
+
 }

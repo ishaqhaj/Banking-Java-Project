@@ -89,14 +89,63 @@ public class Accueil {
         Account userAccount = accountDAO.getUserAccount(authenticatedUser.getUserId());
         SessionManager.getInstance().setSelectedAccount(userAccount);
 
-        navigateAfterAccountSelection();
+        navigateAfterAccountSelectionSimple();
     }
-    public void navigateAfterAccountSelection() {
+    public void virementMultiple(ActionEvent event){
+        UserDAOImpl userDAO = new UserDAOImpl();
+        AccountDAOImpl accountDAO = new AccountDAOImpl();
+        User authenticatedUser = SessionManager.getInstance().getAuthenticatedUser();
+
+        if (!accountDAO.hasSingleAccount(authenticatedUser.getUserId())) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/SelectAccount.fxml"));
+            try {
+                Pane selectAccountPane = loader.load();
+                SelectAccount selectAccountController = loader.getController();
+                // Définir la redirection personnalisée après sélection
+                selectAccountController.setOnAccountSelected(selectedAccount -> {
+                    // Rediriger vers l'ajout de bénéficiaire
+                    navigateAfterAccountSelectionMultiple();
+                });
+                // Charger le contenu dans la fenêtre principale
+                statiqueMainApp.setCenter(selectAccountPane);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return; // Arrêtez ici pour attendre que l'utilisateur sélectionne un compte
+        }
+
+        // Si l'utilisateur n'a qu'un seul compte, on le sélectionne automatiquement
+        Account userAccount = accountDAO.getUserAccount(authenticatedUser.getUserId());
+        SessionManager.getInstance().setSelectedAccount(userAccount);
+
+        navigateAfterAccountSelectionMultiple();
+    }
+    public void navigateAfterAccountSelectionSimple() {
         loadPage("/GUI/SelectBeneficiary.fxml");
     }
+    public void navigateAfterAccountSelectionMultiple() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/SelectBeneficiary.fxml"));
+        try {
+            Pane selectBeneficiaryPane = loader.load();
+            SelectBeneficiary selectBeneficiaryController = loader.getController();
+            // Définir la redirection personnalisée après sélection
+            selectBeneficiaryController.setRedirection(selectedBeneficiary -> {
+                // Rediriger vers l'ajout de bénéficiaire
+                passerVirementMultiple();
+            });
+            // Charger le contenu dans la fenêtre principale
+            statiqueMainApp.setCenter(selectBeneficiaryPane);
 
-    public void passerVirement(){
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void passerVirementSimple(){
         loadPage("/GUI/VirementSimple.fxml");
+    }
+    public void passerVirementMultiple(){
+        loadPage("/GUI/VirementMultiple.fxml");
     }
     public void loadPage(String fxmlFile) {
         try {
@@ -114,7 +163,7 @@ public class Accueil {
             e.printStackTrace();
         }
     }
-    public void loadHistory(ActionEvent event){
+    public void loadHistory(){
         loadPage("/GUI/history.fxml");
     }
 }

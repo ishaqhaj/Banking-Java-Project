@@ -69,7 +69,7 @@ public class SelectAccount {
             // Appel correct à navigateAfterAccountSelection
             else {
                 Accueil accueilController = (Accueil) SessionManager.getInstance().getController("Accueil");
-                accueilController.navigateAfterAccountSelection();
+                accueilController.navigateAfterAccountSelectionSimple();
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
