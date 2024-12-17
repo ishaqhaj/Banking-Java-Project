@@ -88,7 +88,39 @@ fonctionnalités :
          - **Motif du virement** : Optionnel, mais peut être précisé.  
          - **Méthode de paiement** : Optionnelle, à choisir selon les préférences.  
       
-      Cette fonctionnalité garantit que toutes les transactions respectent les exigences obligatoires (montant et devise) et offrent une flexibilité avec des options supplémentaires            (motif et méthode de paiement).  
+      Cette fonctionnalité garantit que toutes les transactions respectent les exigences obligatoires (montant et devise) et offrent une flexibilité avec des options supplémentaires            (motif et méthode de paiement). 
+
+      
+Virement Multiple
+
+   La fonctionnalité de **virement multiple** permet à l'utilisateur d'effectuer jusqu'à trois virements en une seule opération, tout en respectant la norme **ISO 20022**.  
+   
+   ### Étapes et fonctionnalités principales :
+   1. **Sélection du compte de l'utilisateur** :  
+      - Si l'utilisateur possède plusieurs comptes, il doit commencer par sélectionner le compte à utiliser pour les virements.
+   
+   2. **Spécification des détails du virement** :  
+      Pour chaque virement, l'utilisateur doit obligatoirement fournir :  
+      - **Bénéficiaire** :  
+        - Sélection d'un bénéficiaire déjà enregistré.  
+        - Ajout d'un nouveau bénéficiaire en recherchant par IBAN.  
+      - **Montant** de la transaction.  
+      - **Devise** utilisée.  
+   
+      **Options supplémentaires** :  
+      - **Date d'exécution** du virement.  
+      - **Motif** de la transaction.  
+      - **Méthode de virement** (conformément à la spécification ISO 20022).  
+   
+   3. **Génération du fichier XML** :  
+      - À la fin du processus, un fichier XML conforme à la norme **ISO 20022** est généré.  
+      - Le fichier est automatiquement enregistré dans le dossier suivant :  
+        ```
+        Transaction_XML/VirementMultiple
+        ```  
+   
+   Cette fonctionnalité offre une gestion efficace des virements multiples tout en assurant la compatibilité avec les exigences de la norme ISO 20022.  
+
 
       
       
