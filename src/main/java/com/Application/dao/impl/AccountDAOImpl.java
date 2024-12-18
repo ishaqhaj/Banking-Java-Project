@@ -179,6 +179,29 @@ public class AccountDAOImpl implements AccountDAO {
             db.closeConnection();
         }
     }
+    public boolean isBeneficiaryExists(String iban,String beneficiayIban){
+        String query = "SELECT 1 FROM account_beneficiaries WHERE user_account = ? AND beneficiary_account = ?";
+        DatabaseConnection db=new DatabaseConnection();
+        try (Connection conn = db.getConnection();
+             PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+            preparedStatement.setString(1, iban);
+            preparedStatement.setString(2, beneficiayIban);
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+            return false;
+        }
+        catch (SQLException e) {
+            System.out.println("Erreur lors de l ajout du compte du bénéficiare");
+            e.printStackTrace();
+            return false;
+        }
+        finally {
+            db.closeConnection();
+        }
+
+    }
     public Map<String, String> getBeneficiaries(String iban) {
         Map<String, String> beneficiaries = new HashMap<>();
         String query = "SELECT b.beneficiary_account AS BeneficiaryAccount, " +

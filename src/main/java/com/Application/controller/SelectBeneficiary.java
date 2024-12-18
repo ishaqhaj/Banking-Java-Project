@@ -43,9 +43,12 @@ public class SelectBeneficiary {
             // Positionner le VBox en fonction du texte "title"
             beneficiaryContainer.setLayoutX(searchField.getLayoutX()); // Aligner horizontalement avec le titre
             beneficiaryContainer.setLayoutY(searchField.getLayoutY() + 40); // Placer sous le titre
-
+            int compteur = 0;
             // Parcourir la map des bénéficiaires et créer un bouton radio pour chaque entrée
             for (Map.Entry<String, String> entry : beneficiaries.entrySet()) {
+                if(compteur==7)
+                    break;
+                compteur++;
                 String name = entry.getKey();  // Nom du bénéficiaire
                 String iban = entry.getValue(); // IBAN du bénéficiaire
 
@@ -83,7 +86,9 @@ public class SelectBeneficiary {
             SessionManager.getInstance().setSelectedBeneficiary(beneficiary);
             SessionManager.getInstance().setSelectedAccountBeneficiary(accountDAO.getAccount(iban));
             Account selectedAccount=SessionManager.getInstance().getSelectedAccount();
-            boolean success= accountDAO.addBeneficiaryAccount(selectedAccount.getAccountNumber(),iban);
+            if(!accountDAO.isBeneficiaryExists(selectedAccount.getAccountNumber(),iban)) {
+                boolean success = accountDAO.addBeneficiaryAccount(selectedAccount.getAccountNumber(), iban);
+            }
             if (redirection != null) {
                 redirection.accept(beneficiary); // Exécute la redirection
             }

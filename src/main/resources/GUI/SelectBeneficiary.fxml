@@ -16,7 +16,7 @@
                   <Font name="Arial Bold" size="16.0" />
                </font>
             </Text>
-            <Button layoutX="237.0" layoutY="256.0" mnemonicParsing="false" onAction="#selectBeneficiary" style="-fx-background-color: #D4A017; -fx-cursor: hand;" text="Suivant">
+            <Button layoutX="235.0" layoutY="263.0" mnemonicParsing="false" onAction="#selectBeneficiary" style="-fx-background-color: #D4A017; -fx-cursor: hand;" text="Suivant">
                <font>
                   <Font name="Arial Bold" size="16.0" />
                </font>

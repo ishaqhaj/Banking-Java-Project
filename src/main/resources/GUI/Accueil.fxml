@@ -28,7 +28,7 @@
                         <Font name="Arial Bold" size="14.0" />
                      </font>
                   </Button>
-                  <Button layoutY="95.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="147.0" style="-fx-background-color: #D4A017; -fx-cursor: hand;" text="Virement de masse">
+                  <Button layoutY="95.0" mnemonicParsing="false" onAction="#virementDeMasse" prefHeight="33.0" prefWidth="147.0" style="-fx-background-color: #D4A017; -fx-cursor: hand;" text="Virement de masse">
                      <font>
                         <Font name="Arial Bold" size="14.0" />
                      </font>

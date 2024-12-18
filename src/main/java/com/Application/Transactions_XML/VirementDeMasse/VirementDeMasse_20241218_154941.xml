@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.03">
+    <CstmrCdtTrfInitn>
+        <GrpHdr>
+            <MessageId>MSG_20241218154941_4a8a2a0e</MessageId>
+            <CreationDateTime>2024-12-18T15:49:41</CreationDateTime>
+            <NumberOfTransactions>4</NumberOfTransactions>
+            <ControlSum>12703575.00</ControlSum>
+            <InitgPty>
+                <Nm>Mochariq Ouidad</Nm>
+            </InitgPty>
+        </GrpHdr>
+        <PmtInf>
+            <PaymentMethod>TRF</PaymentMethod>
+            <Debtor>
+                <Nm>Mochariq Ouidad</Nm>
+            </Debtor>
+            <DebtorAccount>
+                <Id>
+                    <IBAN>AL35202111090000000001234567</IBAN>
+                </Id>
+            </DebtorAccount>
+            <Creditor>
+                <Nm>Alice Albert</Nm>
+            </Creditor>
+            <CreditorAccount>
+                <Id>
+                    <IBAN>AT483200000012345864</IBAN>
+                </Id>
+            </CreditorAccount>
+            <InstructedAmount Currency="USD">5678999.00</InstructedAmount>
+            <RemittanceInformation>
+                <Ustrd></Ustrd>
+            </RemittanceInformation>
+            <PaymentInformationId>PAY_4GLWBO_20241218154941_7ba7af05</PaymentInformationId>
+            <BatchBooking>false</BatchBooking>
+            <RequestedExecutionDate>2024-12-18</RequestedExecutionDate>
+            <InstructionId>INST_4GLWBO_20241218154941_21cbd874</InstructionId>
+            <ChargeBearer>SLEV</ChargeBearer>
+            <EndToEndId>20241218VAO0TOMCMW</EndToEndId>
+        </PmtInf>
+        <PmtInf>
+            <PaymentMethod>TRF</PaymentMethod>
+            <Debtor>
+                <Nm>Mochariq Ouidad</Nm>
+            </Debtor>
+            <DebtorAccount>
+                <Id>
+                    <IBAN>AL35202111090000000001234567</IBAN>
+                </Id>
+            </DebtorAccount>
+            <Creditor>
+                <Nm>Malak Roudani</Nm>
+            </Creditor>
+            <CreditorAccount>
+                <Id>
+                    <IBAN>BE71096123456769</IBAN>
+                </Id>
+            </CreditorAccount>
+            <InstructedAmount Currency="EUR">667889.00</InstructedAmount>
+            <RemittanceInformation>
+                <Ustrd>Transaction du test de virement de masse</Ustrd>
+            </RemittanceInformation>
+            <PaymentInformationId>PAY_4GLWBO_20241218154941_7bc7331a</PaymentInformationId>
+            <BatchBooking>false</BatchBooking>
+            <RequestedExecutionDate>2024-12-31</RequestedExecutionDate>
+            <InstructionId>INST_4GLWBO_20241218154941_e9333d20</InstructionId>
+            <ChargeBearer>SLEV</ChargeBearer>
+            <EndToEndId>20241218RYX5PDAIZZ</EndToEndId>
+        </PmtInf>
+        <PmtInf>
+            <PaymentMethod>TRF</PaymentMethod>
+            <Debtor>
+                <Nm>Mochariq Ouidad</Nm>
+            </Debtor>
+            <DebtorAccount>
+                <Id>
+                    <IBAN>AL35202111090000000001234567</IBAN>
+                </Id>
+            </DebtorAccount>
+            <Creditor>
+                <Nm>Nouha Adnani</Nm>
+            </Creditor>
+            <CreditorAccount>
+                <Id>
+                    <IBAN>AZ96AZEJ00000000001234567890</IBAN>
+                </Id>
+            </CreditorAccount>
+            <InstructedAmount Currency="USD">5677788.00</InstructedAmount>
+            <RemittanceInformation>
+                <Ustrd></Ustrd>
+            </RemittanceInformation>
+            <PaymentInformationId>PAY_4GLWBO_20241218154941_b7d39998</PaymentInformationId>
+            <BatchBooking>false</BatchBooking>
+            <RequestedExecutionDate>2024-12-30</RequestedExecutionDate>
+            <InstructionId>INST_4GLWBO_20241218154941_87922541</InstructionId>
+            <ChargeBearer>SLEV</ChargeBearer>
+            <EndToEndId>202412183MNJHT2YAP</EndToEndId>
+        </PmtInf>
+        <PmtInf>
+            <PaymentMethod>TRF</PaymentMethod>
+            <Debtor>
+                <Nm>Mochariq Ouidad</Nm>
+            </Debtor>
+            <DebtorAccount>
+                <Id>
+                    <IBAN>AL35202111090000000001234567</IBAN>
+                </Id>
+            </DebtorAccount>
+            <Creditor>
+                <Nm>Mohammed Ali</Nm>
+            </Creditor>
+            <CreditorAccount>
+                <Id>
+                    <IBAN>MA64011519000001205000534921</IBAN>
+                </Id>
+            </CreditorAccount>
+            <InstructedAmount Currency="EUR">678899.00</InstructedAmount>
+            <RemittanceInformation>
+                <Ustrd>Test masse</Ustrd>
+            </RemittanceInformation>
+            <PaymentInformationId>PAY_4GLWBO_20241218154941_b2979ae0</PaymentInformationId>
+            <BatchBooking>false</BatchBooking>
+            <RequestedExecutionDate>2024-12-18</RequestedExecutionDate>
+            <InstructionId>INST_4GLWBO_20241218154941_902ca853</InstructionId>
+            <ChargeBearer>SLEV</ChargeBearer>
+            <EndToEndId>202412184R6583IAV9</EndToEndId>
+        </PmtInf>
+    </CstmrCdtTrfInitn>
+</Document>

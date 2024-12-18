@@ -91,6 +91,40 @@ public class Accueil {
 
         navigateAfterAccountSelectionSimple();
     }
+
+    @FXML
+    public void virementDeMasse(ActionEvent event) {
+        UserDAOImpl userDAO = new UserDAOImpl();
+        AccountDAOImpl accountDAO = new AccountDAOImpl();
+        User authenticatedUser = SessionManager.getInstance().getAuthenticatedUser();
+
+        if (!accountDAO.hasSingleAccount(authenticatedUser.getUserId())) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/SelectAccount.fxml"));
+            try {
+                Pane selectAccountPane = loader.load();
+                SelectAccount selectAccountController = loader.getController();
+                // Définir la redirection personnalisée après sélection
+                selectAccountController.setOnAccountSelected(selectedAccount -> {
+                    // Rediriger vers l'ajout de bénéficiaire
+                    navigateAfterAccountSelectionMasse();
+                });
+                // Charger le contenu dans la fenêtre principale
+                statiqueMainApp.setCenter(selectAccountPane);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+        // Si l'utilisateur n'a qu'un seul compte, on le sélectionne automatiquement
+        else {
+            Account userAccount = accountDAO.getUserAccount(authenticatedUser.getUserId());
+            SessionManager.getInstance().setSelectedAccount(userAccount);
+            navigateAfterAccountSelectionMasse();
+        }
+    }
+
+    @FXML
     public void virementMultiple(ActionEvent event){
         UserDAOImpl userDAO = new UserDAOImpl();
         AccountDAOImpl accountDAO = new AccountDAOImpl();
@@ -121,6 +155,7 @@ public class Accueil {
 
         navigateAfterAccountSelectionMultiple();
     }
+
     public void navigateAfterAccountSelectionSimple() {
         loadPage("/GUI/SelectBeneficiary.fxml");
     }
@@ -141,12 +176,34 @@ public class Accueil {
             e.printStackTrace();
         }
     }
+    public void navigateAfterAccountSelectionMasse(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/SelectBeneficiary.fxml"));
+        try {
+            Pane selectBeneficiaryPane = loader.load();
+            SelectBeneficiary selectBeneficiaryController = loader.getController();
+            // Définir la redirection personnalisée après sélection
+            selectBeneficiaryController.setRedirection(selectedBeneficiary -> {
+                // Rediriger vers l'ajout de bénéficiaire
+                passerVirementMasse();
+            });
+            // Charger le contenu dans la fenêtre principale
+            statiqueMainApp.setCenter(selectBeneficiaryPane);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public void passerVirementSimple(){
         loadPage("/GUI/VirementSimple.fxml");
     }
     public void passerVirementMultiple(){
         loadPage("/GUI/VirementMultiple.fxml");
     }
+
+    public void passerVirementMasse(){
+        loadPage("/GUI/VirementMasse.fxml");
+    }
+
     public void loadPage(String fxmlFile) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
@@ -163,6 +220,7 @@ public class Accueil {
             e.printStackTrace();
         }
     }
+
     public void loadHistory(){
         loadPage("/GUI/history.fxml");
     }

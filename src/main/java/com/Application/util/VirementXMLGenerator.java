@@ -125,6 +125,7 @@ public class VirementXMLGenerator {
 
         System.out.println("Fichier XML généré avec succès : " + outputFile.getAbsolutePath());
     }
+
     public static void generateXMLVirementMultiple(List<Virement> virements) throws Exception {
         if (virements == null || virements.isEmpty()) {
             throw new IllegalArgumentException("La liste des virements ne doit pas être vide.");
@@ -232,6 +233,115 @@ public class VirementXMLGenerator {
         marshaller.marshal(document, outputFile);
 
         System.out.println("Fichier XML pour virement multiple généré avec succès : " + outputFile.getAbsolutePath());
+    }
+
+    public static void generateXMLVirementMasse(List<Virement> virements) throws Exception {
+        if (virements == null || virements.isEmpty()) {
+            throw new IllegalArgumentException("La liste des virements ne doit pas être vide.");
+        }
+        AccountDAOImpl accountDAO=new AccountDAOImpl();
+        UserDAOImpl userDAO=new UserDAOImpl();
+        // Créer le message principal ISO 20022
+        CstmrCdtTrfInitn cstmrCdtTrfInitn = new CstmrCdtTrfInitn();
+
+        // Configurer les en-têtes de groupe
+        GroupHeader groupHeader = new GroupHeader();
+        groupHeader.setMessageId(generateMessageId());
+        groupHeader.setCreationDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")));
+        groupHeader.setNumberOfTransactions(String.valueOf(virements.size()));
+
+        // Calculer le total des montants pour ControlSum
+        BigDecimal controlSum = virements.stream()
+                .map(Virement::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        groupHeader.setControlSum(controlSum.setScale(2, RoundingMode.HALF_UP));
+
+        // Récupérer l'utilisateur initiateur
+        User authenticatedUser = SessionManager.getInstance().getAuthenticatedUser();
+        PartyIdentification initiatingParty = new PartyIdentification();
+        initiatingParty.setName(authenticatedUser.getName());
+        groupHeader.setInitiatingParty(initiatingParty);
+
+        cstmrCdtTrfInitn.setGroupHeader(groupHeader);
+
+        // Parcourir chaque virement et l'ajouter dans le message
+        for (Virement virement : virements) {
+            PaymentInformation paymentInformation = new PaymentInformation();
+            paymentInformation.setPaymentInformationId(generatePaymentInformationId(authenticatedUser.getUserId()));
+            paymentInformation.setPaymentMethod("TRF");
+            paymentInformation.setRequestedExecutionDate(virement.getTimestamp());
+            // Débiteur
+            PartyIdentification debtor = new PartyIdentification();
+            debtor.setName(authenticatedUser.getName());
+            paymentInformation.setDebtor(debtor);
+
+            // Compte du débiteur
+            CashAccount debtorAccount = new CashAccount();
+            debtorAccount.setId(new AccountId(virement.getDebtorAccount().getAccountNumber(), "IBAN"));
+            paymentInformation.setDebtorAccount(debtorAccount);
+
+            // Créancier
+            PartyIdentification creditor = new PartyIdentification();
+            String beneficiaryId=accountDAO.findUserIdByAccountNumber(virement.getCreditorAccount().getAccountNumber());
+            User beneficiary = userDAO.getUser(beneficiaryId);
+            creditor.setName(beneficiary.getName());
+            paymentInformation.setCreditor(creditor);
+
+            // Compte du créancier
+            CashAccount creditorAccount = new CashAccount();
+            creditorAccount.setId(new AccountId(virement.getCreditorAccount().getAccountNumber(), "IBAN"));
+            paymentInformation.setCreditorAccount(creditorAccount);
+
+            // Montant
+            Amount amount = new Amount();
+            amount.setCurrency(virement.getCurrency());
+            DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+            DecimalFormat decimalFormat = new DecimalFormat("#0.00", symbols);
+            String formattedAmount = decimalFormat.format(virement.getAmount());
+
+            amount.setValue(formattedAmount);
+            paymentInformation.setInstructedAmount(amount);
+
+            // Instruction ID
+            paymentInformation.setInstructionId(generateInstructionId(authenticatedUser.getUserId()));
+            paymentInformation.setEndToEndId(virement.getEndToEndId());
+            paymentInformation.setChargeBearer("SLEV");
+
+            // Motif
+            RemittanceInformation remittanceInformation = new RemittanceInformation();
+            remittanceInformation.setUnstructured(virement.getMotif());
+            paymentInformation.setRemittanceInformation(remittanceInformation);
+
+            // Ajouter le paiement dans le message principal
+            cstmrCdtTrfInitn.addPaymentInformation(paymentInformation);
+        }
+
+        // Créer le document avec namespace
+        Document document = new Document();
+        document.setCstmrCdtTrfInitn(cstmrCdtTrfInitn);
+        document.setNamespace("urn:iso:std:iso:20022:tech:xsd:pain.001.001.03");
+
+        // Générer le XML
+        JAXBContext context = JAXBContext.newInstance(Document.class);
+        Marshaller marshaller = context.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+        // Chemin pour sauvegarder le fichier XML
+        String outputDirectory = "src/main/java/com/Application/Transactions_XML/VirementDeMasse/";
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+        String fileName = "VirementDeMasse_" + timestamp + ".xml";
+
+        // Assurez-vous que le répertoire existe
+        File directory = new File(outputDirectory);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        // Créer le fichier et sauvegarder le XML
+        File outputFile = new File(outputDirectory + fileName);
+        marshaller.marshal(document, outputFile);
+
+        System.out.println("Fichier XML pour le virement de masse est généré avec succès : " + outputFile.getAbsolutePath());
     }
 
     private static String generateMessageId() {
