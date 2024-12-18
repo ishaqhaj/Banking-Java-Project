@@ -120,6 +120,35 @@ Virement Multiple
         ```  
    
    Cette fonctionnalité offre une gestion efficace des virements multiples tout en assurant la compatibilité avec les exigences de la norme ISO 20022.  
+   
+Virement de Masse
+
+   La fonctionnalité de virement de masse permet à l'utilisateur d'effectuer jusqu'à 5000 virements en une seule opération, tout en respectant la norme ISO 20022.
+   
+   Détails :
+   
+      Bénéficiaires :
+      
+      L'utilisateur peut sélectionner un bénéficiaire existant ou effectuer une recherche simple par IBAN pour en ajouter un nouveau.
+      
+      Informations Obligatoires :
+      
+      Bénéficiaire pour chaque virement.
+      Montant de la transaction.
+      Devise utilisée.
+      
+      Options Supplémentaires :
+      
+      Spécification d'une date exécutive pour chaque virement.
+      Choix de la méthode de paiement adaptée.
+
+      
+      Cette fonctionnalité offre une grande flexibilité et optimise la gestion des transactions à grande échelle pour répondre aux besoins des utilisateurs professionnels et 
+      particuliers.
+      
+      Fichiers générés :
+      Chaque virement de masse génère automatiquement un fichier XML conforme à la norme ISO 20022, enregistré dans le répertoire suivant :
+      Transaction_XML/VirementDeMasse
 
 
       
