@@ -101,4 +101,7 @@ public class UserService {
     public Set<String> getUserAccounts(String userId){
         return accountDAO.getUserAccounts(userId);
     }
+    public boolean isBeneficiaryExists(String iban,String beneficiayIban){
+        return accountDAO.isBeneficiaryExists(iban, beneficiayIban);
+    }
 }
