@@ -18,4 +18,5 @@ public interface VirementDAO {
      * @param virement l'objet Virement à insérer
      */
     void insertVirement(Virement virement);
+    public void deleteVirement(String end_to_end);
 }

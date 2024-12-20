@@ -17,16 +17,11 @@ public class BankDAOImpl implements BankDAO {
 
         // Si le BIC est fourni, on cherche avec le name et le BIC
         try(Connection conn=db.getConnection()){
-            if (bank.getBic() != null && !bank.getBic().trim().isEmpty()) {
-                query = "SELECT bank_id, name, bic FROM bank WHERE name = ? AND bic = ?";
-                preparedStatement = conn.prepareStatement(query);
-                preparedStatement.setString(1, bank.getName());
-                preparedStatement.setString(2, bank.getBic());
-            } else { // Sinon on cherche seulement par name
-                query = "SELECT bank_id, name, bic FROM bank WHERE name = ?";
-                preparedStatement = conn.prepareStatement(query);
-                preparedStatement.setString(1, bank.getName());
-            }
+
+            query = "SELECT bank_id, name, bic FROM bank WHERE name = ? AND bic = ?";
+            preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, bank.getName());
+            preparedStatement.setString(2, bank.getBic());
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -60,7 +55,7 @@ public class BankDAOImpl implements BankDAO {
             }
         }
         catch (SQLException e) {
-            System.out.println("Erreur de connexion lors de l'esai de récupération des données de la table bank" + e.getMessage());
+            System.out.println("Erreur de connexion lors de l'essai de récupération des données de la table bank" + e.getMessage());
             return null;
         }
         finally{

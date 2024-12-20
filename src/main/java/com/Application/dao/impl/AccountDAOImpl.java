@@ -228,6 +228,37 @@ public class AccountDAOImpl implements AccountDAO {
         }
         return beneficiaries;
     }
+    public void deleteAccount(Account account){
+        String query = "DELETE FROM accounts WHERE account_number = ?";
+        DatabaseConnection db=new DatabaseConnection();
+        try (Connection conn = db.getConnection();
+             PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+
+            preparedStatement.setString(1, account.getAccountNumber());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally{
+            db.closeConnection();
+        }
+    }
+
+    public void deleteAccountBeneficiary(String iban,String beneficiaryIban){
+        String query = "DELETE FROM account_beneficiaries WHERE  user_account= ? AND beneficiary_account = ?";
+        DatabaseConnection db=new DatabaseConnection();
+        try (Connection conn = db.getConnection();
+             PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+            preparedStatement.setString(1, iban);
+            preparedStatement.setString(2, beneficiaryIban);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally{
+            db.closeConnection();
+        }
+    }
 }
 
 

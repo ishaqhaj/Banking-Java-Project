@@ -15,4 +15,6 @@ public interface AccountDAO {
     public boolean addBeneficiaryAccount(String iban,String beneficiaryIban);
     public Map<String, String> getBeneficiaries(String iban);
     public boolean isBeneficiaryExists(String iban,String beneficiayIban);
+    public void deleteAccount(Account account);
+    public void deleteAccountBeneficiary(String iban,String beneficiaryIban);
 }

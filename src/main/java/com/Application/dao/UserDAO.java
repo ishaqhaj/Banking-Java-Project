@@ -12,4 +12,5 @@ public interface UserDAO {
     public boolean authenticateUser(String userId, String password);
     public  User getUser(String userId);
     public String getUserNameById(String userId);
+    public void deleteUser(User user);
 }

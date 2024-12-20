@@ -112,7 +112,7 @@ public class SignUp {
             selectedAccountType = selectedAccountType.substring(0, 4);
         String bank = bankField.getText();
         String bic = bicField.getText();
-        if (name.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || idValue.isEmpty() || accountNumber.isEmpty() || bank.isEmpty()||bic.isEmpty()) {
+        if (name.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || idValue.isEmpty() || accountNumber.isEmpty() || bank.isEmpty()||bic.trim().isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Veuillez remplir tous les champs.");
             return;
         }

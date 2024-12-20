@@ -141,4 +141,19 @@ public class UserDAOImpl implements UserDAO {
             db.closeConnection();
         }
     }
+    public void deleteUser(User user){
+        String query = "DELETE FROM users WHERE user_id = ?";
+        DatabaseConnection db=new DatabaseConnection();
+        try (Connection conn = db.getConnection();
+             PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+
+            preparedStatement.setString(1, user.getUserId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally{
+            db.closeConnection();
+        }
+    }
 }

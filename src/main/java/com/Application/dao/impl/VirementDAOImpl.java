@@ -164,4 +164,20 @@ public boolean isEndToEndIdUnique(String endToEndId) {
         return virements;
     }
 
+    public void deleteVirement(String end_to_end){
+        String query = "DELETE FROM virement WHERE end_to_end_id = ?";
+        DatabaseConnection db=new DatabaseConnection();
+        try (Connection conn = db.getConnection();
+             PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+
+            preparedStatement.setString(1, end_to_end);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally{
+            db.closeConnection();
+        }
+    }
+
 }
