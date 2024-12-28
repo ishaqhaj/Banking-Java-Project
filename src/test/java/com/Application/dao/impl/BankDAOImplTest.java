@@ -32,7 +32,7 @@ public class BankDAOImplTest {
        exception = assertThrows(IllegalArgumentException.class, () -> {
             bankDAO.findBank(bank3);
         });
-        assertEquals("Le nom de la banque InvalidBank ne correspond pas au BIC MOROCCO11CI", exception.getMessage());
+        assertEquals("Le nom de la banque InvalidBank ne correspond pas au BIC CIHMMAMC", exception.getMessage());
 
         Bank bank4 = new Bank("NonExistentBank", "NONEXISTENTBIC");
         exception = assertThrows(IllegalArgumentException.class, () -> {
