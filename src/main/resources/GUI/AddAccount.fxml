@@ -46,7 +46,7 @@
                </font>
             </Label>
             <TextField fx:id="bankField" layoutX="292.0" layoutY="146.0" prefHeight="25.0" prefWidth="200.0" promptText="Entrer le nom de la banque" />
-            <TextField fx:id="BICField" layoutX="292.0" layoutY="185.0" prefHeight="25.0" prefWidth="200.0" promptText="Entrer le code BIC de la banque" />
+            <TextField fx:id="bicField" layoutX="292.0" layoutY="185.0" prefHeight="25.0" prefWidth="200.0" promptText="Entrer le code BIC de la banque" />
          </children>
       </AnchorPane>
    </children>
