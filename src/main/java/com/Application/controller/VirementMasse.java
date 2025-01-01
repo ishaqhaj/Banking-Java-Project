@@ -1,10 +1,11 @@
 package com.Application.controller;
 
-import com.Application.model.User;
-import com.Application.model.Virement;
-import com.Application.service.VirementService;
-import com.Application.util.SessionManager;
-import com.Application.util.VirementXMLGenerator;
+import com.application.model.User;
+import com.application.model.Virement;
+import com.application.service.VirementService;
+import com.application.util.SessionManager;
+import com.application.util.VirementXMLGenerator;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -14,6 +15,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import java.util.logging.*;
 
 public class VirementMasse {
     private List<Virement> virements;
@@ -31,17 +34,24 @@ public class VirementMasse {
     private ComboBox<String> paymentMethodBox;
     @FXML
     private DatePicker datePicker;
+    
+    private final static String type="masse";
+    Accueil accueilController;
+    
+    private static final Logger LOGGER = Logger.getLogger(VirementMasse.class.getName());
+    
     @FXML
     private void initialize() {
         this.virements=SessionManager.getInstance().getVirements();
         paneTitle.setText("Informations sur le virement n°"+(this.virements.size()+1));
         currencyBox.getItems().addAll("MAD", "EUR", "USD");
         paymentMethodBox.getItems().addAll("SEPA", "PRPT", "SDVA");
-        User Beneficiary= SessionManager.getInstance().getSelectedBeneficiary();
-        beneficiaireField.setText(Beneficiary.getName());
+        User beneficiary= SessionManager.getInstance().getSelectedBeneficiary();
+        beneficiaireField.setText(beneficiary.getName());
+        accueilController = (Accueil) SessionManager.getInstance().getController("Accueil");
     }
     @FXML
-    public void AddBeneficiary(ActionEvent event){
+    public void addBeneficiary(ActionEvent event){
         virements=SessionManager.getInstance().getVirements();
         if(virements.size()<5000) {
             String amountText = amountField.getText();
@@ -60,11 +70,11 @@ public class VirementMasse {
                 // Créer un objet Virement
                 if(dateValue != null) {
                     String date=dateValue.toString();
-                    Virement virement = new Virement(date, amount, currency, motif, "masse", payMethod);
+                    Virement virement = new Virement(date, amount, currency, motif, type, payMethod);
                     virements.add(virement);
                 }
                 else{
-                    Virement virement = new Virement(amount, currency, motif, "masse", payMethod);
+                    Virement virement = new Virement(amount, currency, motif, type, payMethod);
                     virements.add(virement);
                 }
                 SessionManager.getInstance().setVirements(virements);
@@ -78,7 +88,6 @@ public class VirementMasse {
             alert.showAndWait();
         }
         else{
-            Accueil accueilController = (Accueil) SessionManager.getInstance().getController("Accueil");
             accueilController.navigateAfterAccountSelectionMasse();
         }
     }
@@ -101,11 +110,11 @@ public class VirementMasse {
                 // Créer un objet Virement
                 if(dateValue != null){
                     String date=dateValue.toString();
-                    Virement virement = new Virement(date, amount, currency, motif, "masse", payMethod);
+                    Virement virement = new Virement(date, amount, currency, motif,type , payMethod);
                     virements.add(virement);
                 }
                 else{
-                    Virement virement = new Virement(amount, currency, motif, "masse", payMethod);
+                    Virement virement = new Virement(amount, currency, motif, type, payMethod);
                     virements.add(virement);
                 }
                 VirementService virementService = new VirementService();
@@ -120,12 +129,10 @@ public class VirementMasse {
                 try {
                     VirementXMLGenerator.generateXMLVirementMasse(virements);
                 } catch (Exception ex) {
-                    System.out.println("Erreur lors de la génération du fxml");
-                    throw new RuntimeException(ex);
+                	LOGGER.log(Level.SEVERE, "Erreur lors de la génération du xml: " , ex);
                 }
-                SessionManager.getInstance().setVirements(new ArrayList<Virement>());
+                SessionManager.getInstance().setVirements(new ArrayList<>());
                 virements = SessionManager.getInstance().getVirements();
-                Accueil accueilController = (Accueil) SessionManager.getInstance().getController("Accueil");
                 accueilController.loadHistory();
             }
         }
@@ -141,12 +148,10 @@ public class VirementMasse {
             try {
                 VirementXMLGenerator.generateXMLVirementMultiple(virements);
             } catch (Exception ex) {
-                System.out.println("Erreur lors de la génération du fxml");
-                throw new RuntimeException(ex);
+            	LOGGER.log(Level.SEVERE, "Erreur lors de la génération du xml: " , ex);
             }
-            SessionManager.getInstance().setVirements(new ArrayList<Virement>());
+            SessionManager.getInstance().setVirements(new ArrayList<>());
             virements = SessionManager.getInstance().getVirements();
-            Accueil accueilController = (Accueil) SessionManager.getInstance().getController("Accueil");
             accueilController.loadHistory();
         }
 
