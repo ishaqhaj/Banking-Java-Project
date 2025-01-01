@@ -6,11 +6,11 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
-import com.application.dao.impl.AccountDAOImpl;
-import com.application.dao.impl.BankDAOImpl;
-import com.application.model.Account;
-import com.application.model.Bank;
-import com.application.util.SessionManager;
+import com.Application.dao.impl.AccountDAOImpl;
+import com.Application.dao.impl.BankDAOImpl;
+import com.Application.model.Account;
+import com.Application.model.Bank;
+import com.Application.util.SessionManager;
 
 import java.math.BigDecimal;
 
