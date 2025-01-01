@@ -1,14 +1,16 @@
 package com.Application.dao.impl;
 
 
+import com.Application.dao.impl.BankDAOImpl;
 import com.Application.model.Bank;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class BankDAOImplTest {
+class BankDAOImplTest {
     private BankDAOImpl bankDAO;
     Bank bank;
     @BeforeEach
@@ -17,7 +19,7 @@ public class BankDAOImplTest {
        bank=new Bank("CIH","CIHMMAMC");
     }
     @Test
-    public void findBank(){
+    void findBank(){
         Bank bankResult= bankDAO.findBank(bank);
         assertEquals("CIH", bankResult.getName(), "Le nom de banques doit se correspondre");
         assertEquals("CIHMMAMC", bankResult.getBic(), "Le BIC de banques doit correspondre.");
@@ -42,13 +44,13 @@ public class BankDAOImplTest {
     }
 
     @Test
-    public void getBankIdTest(){
+    void getBankIdTest(){
         int id=bankDAO.getBankId(bank);
         assertEquals(1, id,"Le id de la banque extrait doit se correspondre à l'id actuel de la banque.");
     }
 
     @Test
-    public void getBankTest(){
+    void getBankTest(){
         Bank bankResult= bankDAO.getBank(1);
         assertEquals("CIH", bankResult.getName(), "Le nom de banques doit se correspondre");
         assertEquals("CIHMMAMC", bankResult.getBic(), "Le BIC de banques doit correspondre.");
