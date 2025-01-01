@@ -26,10 +26,10 @@ public class PaymentInformation {
     @XmlElement(name = "CdtrAgt")
     private FinancialInstitution creditorAgent;
 
-    @XmlElement(name = "Amount")
+    @XmlElement(name = "Amt")
     private Amount amount;
 
-    @XmlElement(name = "Amt")  // Nouveau champ InstructedAmount
+    @XmlElement(name = "InstdAmt")  // Nouveau champ InstructedAmount
     private Amount instructedAmount;
 
     @XmlElement(name = "RemittanceInformation")
