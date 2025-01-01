@@ -1,4 +1,4 @@
-package com.Application.controller;
+package com.application.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,10 +8,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import com.Application.dao.impl.UserDAOImpl;
-import com.Application.model.User;
-import com.Application.service.UserService;
-import com.Application.util.SessionManager;
+
+import com.application.dao.impl.UserDAOImpl;
+import com.application.model.User;
+import com.application.service.UserService;
+import com.application.util.SessionManager;
 
 import java.io.IOException;
 
@@ -29,7 +30,6 @@ public class Login {
             boolean isAuthenticated = userService.authenticateUser(userId, password);
             if (!isAuthenticated) {
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Les informations entrées sont incorrectes");
-                return;
             }
             else {
                 UserDAOImpl userDAO = new UserDAOImpl();
@@ -38,7 +38,7 @@ public class Login {
                 closeWindow();
                 // Charger l'interface Accueil.fxml
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Accueil.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/Accueil.fxml"));
                     Parent root = loader.load();
                     Stage stage = new Stage();
                     stage.setTitle("Accueil");
@@ -47,19 +47,15 @@ public class Login {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                /*Accueil accueil = new Accueil();
-                Stage accueilStage = new Stage();
-                accueil.start(accueilStage);*/
             }
         }
         else{
             showAlert(Alert.AlertType.ERROR, "Erreur", "Veuillez remplir tous les champs.");
-            return;
         }
     }
     @FXML
     public void createUser()  {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/userRegistration.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/userRegistration.fxml"));
         try{
             Parent root = loader.load();
             Stage stage = new Stage();
