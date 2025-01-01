@@ -10,8 +10,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class VirementDAOImpl implements VirementDAO {
+	private static final Logger LOGGER = Logger.getLogger(VirementDAOImpl.class.getName());
 // Vérifie si un end_to_end_id existe déjà
 public boolean isEndToEndIdUnique(String endToEndId) {
     String query = "SELECT 1 FROM virement WHERE end_to_end_id = ? LIMIT 1";
@@ -29,7 +32,7 @@ public boolean isEndToEndIdUnique(String endToEndId) {
         }
 
     } catch (SQLException e) {
-        System.err.println("Erreur lors de la vérification de l'ID end_to_end_id : " + endToEndId);
+    	LOGGER.log(Level.SEVERE, "Erreur lors de la vérification de l'ID end_to_end_id : " + endToEndId);
         e.printStackTrace();
     }
     finally{
@@ -57,7 +60,7 @@ public boolean isEndToEndIdUnique(String endToEndId) {
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            System.err.println("Erreur lors de l'insertion du virement : " + e.getMessage());
+        	LOGGER.log(Level.SEVERE, "Erreur lors de l'insertion du virement : " + e.getMessage());
         }
         finally{
             db.closeConnection();
@@ -96,24 +99,24 @@ public boolean isEndToEndIdUnique(String endToEndId) {
                 try {
                     conn.rollback(); // Annuler les changements en cas d'erreur
                 } catch (SQLException rollbackEx) {
-                    System.err.println("Erreur lors du rollback : " + rollbackEx.getMessage());
+                	LOGGER.log(Level.SEVERE, "Erreur lors du rollback : " + rollbackEx.getMessage());
                 }
             }
-            System.err.println("Erreur lors de l'insertion des virements : " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Erreur lors de l'insertion des virements : " + e.getMessage());
         } finally {
             // Fermeture des ressources
             if (preparedStatement != null) {
                 try {
                     preparedStatement.close();
                 } catch (SQLException e) {
-                    System.err.println("Erreur lors de la fermeture du PreparedStatement : " + e.getMessage());
+                	LOGGER.log(Level.SEVERE, "Erreur lors de la fermeture du PreparedStatement : " + e.getMessage());
                 }
             }
             if (conn != null) {
                 try {
                     conn.close();
                 } catch (SQLException e) {
-                    System.err.println("Erreur lors de la fermeture de la connexion : " + e.getMessage());
+                	LOGGER.log(Level.SEVERE, "Erreur lors de la fermeture de la connexion : " + e.getMessage());
                 }
             }
         }
@@ -155,7 +158,7 @@ public boolean isEndToEndIdUnique(String endToEndId) {
             }
 
         } catch (SQLException e) {
-            System.err.println("Erreur lors de la récupération des virements de l'utilsateur courant.");
+        	LOGGER.log(Level.SEVERE, "Erreur lors de la récupération des virements de l'utilsateur courant.");
             e.printStackTrace();
         } finally {
             db.closeConnection();
@@ -164,13 +167,13 @@ public boolean isEndToEndIdUnique(String endToEndId) {
         return virements;
     }
 
-    public void deleteVirement(String end_to_end){
+    public void deleteVirement(String endToEnd){
         String query = "DELETE FROM virement WHERE end_to_end_id = ?";
         DatabaseConnection db=new DatabaseConnection();
         try (Connection conn = db.getConnection();
              PreparedStatement preparedStatement = conn.prepareStatement(query)) {
 
-            preparedStatement.setString(1, end_to_end);
+            preparedStatement.setString(1, endToEnd);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
