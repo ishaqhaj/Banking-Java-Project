@@ -168,10 +168,69 @@ Test avec JUnit
    
    Ces tests garantissent la fiabilité et la cohérence des fonctionnalités principales de l'application.
 
+####Premier Test avec SonarQube : Analyse de la Qualité et du Taux de Couverture de Code
 
-
-
+      Suite au premier test de qualité avec SonarQube, voici une interprétation des résultats présentés dans l'image :
       
+      ![FirstAnalysisSonarQube](https://github.com/user-attachments/assets/fcbde8c6-4f20-488e-9cbe-51ec09707b0e)
+
+      Résultats Identifiés :
+      
+          Erreurs de Sécurité :
+
+               ![Capture d’écran du 2024-12-29 10-23-43](https://github.com/user-attachments/assets/74fb0162-2f5f-4857-bf91-af48786c003d)
+               ![Capture d’écran du 2024-12-29 10-24-04](https://github.com/user-attachments/assets/10ebc7a0-d7b5-4f70-84c4-db2e173d04d9)
+
+          
+              Stockage non sécurisé de l'identifiant de SonarQube.
+              Le compte "root" de la base de données n'a pas de mot de passe défini.
+              Le mot de passe de l'application email est directement exposé dans le code.
+      
+          Erreurs de Fiabilité (Reliability) :
+          ![Capture d’écran du 2024-12-29 14-31-31](https://github.com/user-attachments/assets/685215c3-d3bd-4b3d-a964-860560b013c3)
+
+              16 erreurs détectées, principalement dues à des problèmes de gestion des ressources :
+
+              ![Capture d’écran du 2024-12-29 10-37-11](https://github.com/user-attachments/assets/9425a970-37f0-4b10-a5d7-3d50e2290951)
+
+
+             Ces erreurs sont liées à l'utilisation incorrecte de PreparedStatement dans les méthodes DAO du projet, entraînant une gestion inadéquate des ressources                       (connexion, requêtes, etc.).
+      
+          Erreurs de Maintenabilité :
+          
+             ![Capture d’écran du 2024-12-29 14-31-31](https://github.com/user-attachments/assets/fd02c087-bb60-406e-b471-43b3ac78a96f)
+             ![Capture d’écran du 2024-12-29 14-42-43](https://github.com/user-attachments/assets/1fb1443f-6e70-41ad-8ad0-baefb0b8be13)
+             ![Capture d’écran du 2024-12-29 17-59-01](https://github.com/user-attachments/assets/5e86cdbc-4e44-44b1-81f2-d570a1749c8f)
+             ![Capture d’écran du 2024-12-29 22-28-10](https://github.com/user-attachments/assets/7c4a2063-03f0-4858-b4cd-04ad886284d9)
+             ![Capture d’écran du 2025-01-01 00-27-28](https://github.com/user-attachments/assets/b798e054-e58e-424b-8355-bc2b2b4e3955)
+             ![Capture d’écran du 2024-12-31 08-31-37](https://github.com/user-attachments/assets/c14466ba-dad6-4592-9e45-fda8761c028d)
+             ![Capture d’écran du 2024-12-30 20-39-54](https://github.com/user-attachments/assets/ee12c73e-8acb-428c-a453-5d7e0711e4d3)
+
+
+         
+
+              220 erreurs détectées, liées à plusieurs aspects :
+                  problème de nommage.
+                    Le package Application était écrit en majuscule, ce qui va à l'encontre des conventions de nommage.
+                  Problèmes de duplication de code.
+                  Mauvais choix de noms de variables.
+                  Importations non utilisées laissées dans le code.
+                  Utilisation de System.out ou System.err au lieu de Logger, qui est recommandé pour une meilleure gestion des logs.
+                  Modificateurs mal utilisés ou inappropriés.
+      
+          Taux de Couverture des Tests :
+              Le taux de couverture des tests de code était nul, bien que toutes les méthodes DAO du projet aient été testées. Cela suggère que les tests existants ne sont                  pas correctement détectés ou configurés pour être pris en compte dans le calcul de la couverture de code par SonarQube.
+      
+      Actions Correctives Apportées :
+      
+          Suppression des imports inutilisés.
+          Adoption des bonnes pratiques de nommage pour les packages et les variables.
+          Utilisation de Logger pour remplacer les appels à System.out ou System.err.
+          Révision et modification des modificateurs pour respecter les conventions de codage et améliorer la maintenabilité.
+          Investigation en cours pour résoudre le problème de la couverture des tests de code.
+      
+      
+            
       
 
 
