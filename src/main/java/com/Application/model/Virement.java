@@ -4,13 +4,15 @@ import com.Application.dao.impl.VirementDAOImpl;
 import com.Application.util.SessionManager;
 
 import java.math.BigDecimal;
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.Random;
+
 
 public class Virement {
+	private static final SecureRandom RANDOM = new SecureRandom();
     private String endToEndId;
     private Account debtorAccount;
     private Account creditorAccount;
@@ -78,10 +80,8 @@ public class Virement {
     private static String generateRandomAlphanumeric(int length) {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         StringBuilder result = new StringBuilder();
-        Random random = new Random();
-
         for (int i = 0; i < length; i++) {
-            int index = random.nextInt(characters.length());
+            int index = RANDOM.nextInt(characters.length());
             result.append(characters.charAt(index));
         }
 
