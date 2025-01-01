@@ -4,9 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
-import com.Application.model.User;
-import com.Application.service.UserService;
-import com.Application.util.SessionManager;
+import com.application.service.UserService;
+import com.application.util.SessionManager;
 
 public class AddBeneficiary {
     @FXML
@@ -15,7 +14,7 @@ public class AddBeneficiary {
     private TextField ibanField;
 
     @FXML
-    public void addBeneficiary() {
+    public void addBeneficiary(ActionEvent event) {
         String name = nameField.getText().trim();
         String iban = ibanField.getText().trim();
 
@@ -29,10 +28,8 @@ public class AddBeneficiary {
         }
 
         UserService userService = new UserService();
-        User authenticatedUser = SessionManager.getInstance().getAuthenticatedUser();
-
         try {
-            boolean success = userService.addBeneficiary(authenticatedUser.getUserId(), name, iban);
+            boolean success = userService.addBeneficiary(name, iban);
 
             if (success) {
                 showSuccess("Le bénéficiaire a été ajouté avec succès.");
