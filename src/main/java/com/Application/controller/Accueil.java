@@ -6,10 +6,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
-import com.application.dao.impl.AccountDAOImpl;
-import com.application.model.Account;
-import com.application.model.User;
-import com.application.util.SessionManager;
+import com.Application.dao.impl.AccountDAOImpl;
+import com.Application.model.Account;
+import com.Application.model.User;
+import com.Application.util.SessionManager;
 
 import lombok.Getter;
 import lombok.Setter;
