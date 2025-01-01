@@ -1,12 +1,16 @@
 package com.Application.dao.impl;
 
-
+import com.Application.dao.impl.AccountDAOImpl;
+import com.Application.dao.impl.UserDAOImpl;
+import com.Application.dao.impl.VirementDAOImpl;
 import com.Application.model.Account;
+import com.Application.model.Address;
 import com.Application.model.Bank;
 import com.Application.model.User;
 import com.Application.model.Virement;
 import com.Application.util.DatabaseConnection;
 import com.Application.util.SessionManager;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +25,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class VirementDAOImplTest {
+class VirementDAOImplTest {
     private VirementDAOImpl virementDAO;
     private Virement virement;
     UserDAOImpl userDAO;
@@ -37,13 +41,15 @@ public class VirementDAOImplTest {
         accountDAO = new AccountDAOImpl();
         Bank testBank = new Bank("CIH", "CIHMMAMC");
         testAccount = new Account("XK051212012345678906", "CACC", testBank);
-        testUser = new User("AB78899", "AX6578", "Albert Roben", "rtyyu234@", "rober@gmail.com", "Washington city build.14", "Washington", "10000", "US", testAccount);
+        Address address=new Address("Washington city build.14", "Washington", "10000", "US");
+        testUser = new User("AB78899", "AX6578", "Albert Roben", "rtyyu234@", "rober@gmail.com",address , testAccount);
         testAccount.setOwner(testUser);
         userDAO.insertUser(testUser);
         accountDAO.insertAccount(testAccount);
         SessionManager.getInstance().setSelectedAccount(testAccount);
         testAccount2 = new Account("AT62 2502 4070 4624 6822", "CACC", testBank);
-        testUser2 = new User("BE5678", "BX3556", "Rozalita Martin", "5678889@@@@", "r.m@gmail.com", "Washington city build.20", "Washington", "10000", "US", testAccount2);
+        Address address2=new Address("Washington city build.20", "Washington", "10000", "US");
+        testUser2 = new User("BE5678", "BX3556", "Rozalita Martin", "5678889@@@@", "r.m@gmail.com", address2, testAccount2);
         userDAO.insertUser(testUser2);
         testAccount2.setOwner(testUser2);
         accountDAO.insertAccount(testAccount2);
@@ -54,7 +60,7 @@ public class VirementDAOImplTest {
     }
 
     @Test
-    public void isEndToEndIdUniqueTest(){
+    void isEndToEndIdUniqueTest(){
         virementDAO.insertVirement(virement);
         boolean unique=virementDAO.isEndToEndIdUnique(virement.getEndToEndId());
         assertEquals(false,unique,"Cet end_to_end n'est pas unique car il est déjà inséré a la base de données.");
@@ -64,7 +70,7 @@ public class VirementDAOImplTest {
     }
 
     @Test
-    public void insertVirementTest(){
+    void insertVirementTest(){
         virementDAO.insertVirement(virement);
         String query = "SELECT debtor_account_number, creditor_account_number, amount, currency, timestamp, motif, type, methode_paiement FROM virement WHERE end_to_end_id = ?";
         DatabaseConnection db = new DatabaseConnection();
@@ -75,8 +81,8 @@ public class VirementDAOImplTest {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                String retrievedDebtor_account_number = resultSet.getString("debtor_account_number");
-                String retrievedCreditor_account_number = resultSet.getString("creditor_account_number");
+                String retrievedDebtorAccountNumber = resultSet.getString("debtor_account_number");
+                String retrievedCreditorAccountNumber = resultSet.getString("creditor_account_number");
                 BigDecimal retrievedAmount = resultSet.getBigDecimal("amount");
                 String retrievedCurrency = resultSet.getString("currency");
                 String retrievedTimestamp = resultSet.getString("timestamp");
@@ -84,8 +90,8 @@ public class VirementDAOImplTest {
                 String retrievedType = resultSet.getString("type");
                 String retrievedPaymentMethod = resultSet.getString("methode_paiement");
                 // Assertions pour vérifier les données
-                assertEquals(virement.getDebtorAccount().getAccountNumber(), retrievedDebtor_account_number);
-                assertEquals(virement.getCreditorAccount().getAccountNumber(), retrievedCreditor_account_number);
+                assertEquals(virement.getDebtorAccount().getAccountNumber(), retrievedDebtorAccountNumber);
+                assertEquals(virement.getCreditorAccount().getAccountNumber(), retrievedCreditorAccountNumber);
                 assertEquals(0, virement.getAmount().compareTo(retrievedAmount), "Les montants ne correspondent pas.");
                 assertEquals(virement.getCurrency(), retrievedCurrency);
                 assertEquals(virement.getTimestamp(), retrievedTimestamp);
@@ -101,7 +107,7 @@ public class VirementDAOImplTest {
     }
 
     @Test
-    public void insertVirements(){
+    void insertVirements(){
         List<Virement> virements=new ArrayList<Virement>();
         virements.add(virement);
         assertNotNull(SessionManager.getInstance().getSelectedAccount(), "Debtor account is not set.");
@@ -120,8 +126,8 @@ public class VirementDAOImplTest {
             int compteur=0;
             while (resultSet.next()) {
                 compteur++;
-                String retrievedDebtor_account_number = resultSet.getString("debtor_account_number");
-                String retrievedCreditor_account_number = resultSet.getString("creditor_account_number");
+                String retrievedDebtorAccountNumber = resultSet.getString("debtor_account_number");
+                String retrievedCreditorAccountNumber = resultSet.getString("creditor_account_number");
                 BigDecimal retrievedAmount = resultSet.getBigDecimal("amount");
                 String retrievedCurrency = resultSet.getString("currency");
                 String retrievedTimestamp = resultSet.getString("timestamp");
@@ -130,13 +136,13 @@ public class VirementDAOImplTest {
                 String retrievedPaymentMethod = resultSet.getString("methode_paiement");
                 // Assertions pour vérifier les données
                 assertTrue(
-                        retrievedDebtor_account_number.equals(virement.getDebtorAccount().getAccountNumber()) ||
-                                retrievedDebtor_account_number.equals(virement2.getDebtorAccount().getAccountNumber()),
+                        retrievedDebtorAccountNumber.equals(virement.getDebtorAccount().getAccountNumber()) ||
+                                retrievedDebtorAccountNumber.equals(virement2.getDebtorAccount().getAccountNumber()),
                         "retrievedDebtor_account_number doit correspondre à l'un des deux numéros de compte."
                 );
                 assertTrue(
-                        retrievedCreditor_account_number.equals(virement.getCreditorAccount().getAccountNumber()) ||
-                                retrievedCreditor_account_number.equals(virement2.getCreditorAccount().getAccountNumber())
+                        retrievedCreditorAccountNumber.equals(virement.getCreditorAccount().getAccountNumber()) ||
+                                retrievedCreditorAccountNumber.equals(virement2.getCreditorAccount().getAccountNumber())
                 );
 
                 assertTrue(
@@ -175,7 +181,7 @@ public class VirementDAOImplTest {
     }
 
     @Test
-    public void getVirementsByUserIdTest(){
+    void getVirementsByUserIdTest(){
         Virement virement2=new Virement(new BigDecimal(5000),"USD","le deuxième exemplaire","simple","SEPA");
         virementDAO.insertVirement(virement);
         virementDAO.insertVirement(virement2);
