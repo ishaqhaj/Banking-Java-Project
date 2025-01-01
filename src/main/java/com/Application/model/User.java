@@ -9,35 +9,26 @@ public class User {
     private String name;
     private String password;
     private String email;
-    private String address;
-    private String city;
-    private String postalCode;
-    private String country;
+    private Address address;
     private List<Account> accounts; // Liste de comptes
 
-    public User(String idValue, String userId,String name, String password, String email, String address, String city, String postalCode, String country,Account account) {
+    public User(String idValue, String userId,String name, String password, String email, Address address,Account account) {
         this.idValue = idValue;
         this.userId = userId;
         this.name = name;
         this.password = password;
         this.email = email;
         this.address = address;
-        this.city = city;
-        this.postalCode = postalCode;
-        this.country = country;
         this.accounts = new ArrayList<>(); // Initialisation de la liste de comptes
         this.accounts.add(account);
     }
-    public User(String idValue, String userId,String name, String password, String email, String address, String city, String postalCode, String country) {
+    public User(String idValue, String userId,String name, String password, String email, Address address) {
         this.idValue = idValue;
         this.userId = userId;
         this.name = name;
         this.password = password;
         this.email = email;
         this.address = address;
-        this.city = city;
-        this.postalCode = postalCode;
-        this.country = country;
         this.accounts = new ArrayList<>(); // Initialisation de la liste de comptes
     }
 
@@ -89,36 +80,12 @@ public class User {
         this.email = email;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
     }
 
     public List<Account> getAccounts() {
@@ -139,3 +106,4 @@ public class User {
         this.accounts.remove(account);
     }
 }
+
