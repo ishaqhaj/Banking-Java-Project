@@ -9,14 +9,21 @@ import jakarta.activation.DataHandler;
 import jakarta.activation.DataSource;
 import jakarta.activation.FileDataSource;
 
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.io.IOException;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.Application.util.ConfigLoader;
 
 public class EmailService {
-
+	private static final Logger LOGGER = Logger.getLogger(EmailService.class.getName());
     public void sendEmail(String toEmail, String uniqueId, String pdfPath) {
         String from = "khalidlakbir5@gmail.com";
-        String password = "ccmgfokjfhzfjwjh";       // Remplacez par votre mot de passe d'application Gmail
+        String password = ConfigLoader.getProperty("email.password");       // Mot de passe d'application Gmail
 
         // Configuration des propriétés SMTP
         Properties props = new Properties();
@@ -61,19 +68,22 @@ public class EmailService {
 
             // Envoi du message
             Transport.send(message);
-            System.out.println("Email envoyé avec succès à : " + toEmail);
-
+            LOGGER.info(String.format("Email envoyé avec succès à : %s", toEmail));
+   
             // Suppression du fichier PDF après envoi
-            File pdfFile = new File(pdfPath);
-            if (pdfFile.delete()) {
-                System.out.println("Le fichier PDF a été supprimé avec succès.");
-            } else {
-                System.out.println("Échec de la suppression du fichier PDF.");
-            }
+            Path path = Paths.get(pdfPath);
+            deletePDF(path);
 
         } catch (MessagingException e) {
-            e.printStackTrace();
-            System.out.println("Échec de l'envoi de l'email.");
+            LOGGER.log(Level.SEVERE, "Échec de l'envoi de l'email.",e);
+        }
+    }
+    void deletePDF(Path path) {
+    	try {
+            Files.delete(path);
+            LOGGER.info("Le fichier PDF a été supprimé avec succès.");
+        } catch(IOException e) {
+        	LOGGER.log(Level.SEVERE, "Échec de la suppression du fichier PDF.");
         }
     }
 }
