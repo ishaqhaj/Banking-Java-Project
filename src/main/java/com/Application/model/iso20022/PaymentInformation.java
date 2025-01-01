@@ -5,37 +5,37 @@ import jakarta.xml.bind.annotation.*;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PaymentInformation {
 
-    @XmlElement(name = "PaymentMethod")
+    @XmlElement(name = "PmtMtd")
     private String paymentMethod;
 
-    @XmlElement(name = "Debtor")
+    @XmlElement(name = "Dbtr")
     private PartyIdentification debtor;
 
-    @XmlElement(name = "DebtorAccount")
+    @XmlElement(name = "DbtrAcct")
     private CashAccount debtorAccount;
 
-    @XmlElement(name = "DebtorAgent")
+    @XmlElement(name = "DbtrAgt")
     private FinancialInstitution debtorAgent;
 
-    @XmlElement(name = "Creditor")
+    @XmlElement(name = "Cdtr")
     private PartyIdentification creditor;
 
-    @XmlElement(name = "CreditorAccount")
+    @XmlElement(name = "CdtrAcct")
     private CashAccount creditorAccount;
 
-    @XmlElement(name = "CreditorAgent")
+    @XmlElement(name = "CdtrAgt")
     private FinancialInstitution creditorAgent;
 
     @XmlElement(name = "Amount")
     private Amount amount;
 
-    @XmlElement(name = "InstructedAmount")  // Nouveau champ InstructedAmount
+    @XmlElement(name = "Amt")  // Nouveau champ InstructedAmount
     private Amount instructedAmount;
 
     @XmlElement(name = "RemittanceInformation")
     private RemittanceInformation remittanceInformation;
 
-    @XmlElement(name = "PaymentInformationId")
+    @XmlElement(name = "PmtInfId")
     private String paymentInformationId;
 
     @XmlElement(name = "BatchBooking")
