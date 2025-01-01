@@ -6,10 +6,10 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import com.Application.dao.impl.AccountDAOImpl;
-import com.Application.dao.impl.UserDAOImpl;
-import com.Application.model.Account;
-import com.Application.util.SessionManager;
+
+import com.application.dao.impl.AccountDAOImpl;
+import com.application.model.Account;
+import com.application.util.SessionManager;
 
 import java.util.Set;
 import java.util.function.Consumer;
@@ -29,7 +29,6 @@ public class SelectAccount {
 
     @FXML
     public void initialize() {
-        UserDAOImpl userDAO = new UserDAOImpl();
         AccountDAOImpl accountDAO = new AccountDAOImpl();
         Set<String> userAccounts = accountDAO.getUserAccounts(SessionManager.getInstance().getAuthenticatedUser().getUserId());
         displayUserAccounts(userAccounts);
