@@ -10,10 +10,10 @@ public class AccountId {
     @XmlElement(name = "IBAN")  // Utilisation d'IBAN selon ISO 20022
     private String accountNumber;
 
-    // Ajoutez un constructeur vide obligatoire pour JAXB
+    // Un constructeur vide obligatoire pour JAXB
     public AccountId() {}
 
-    public AccountId(String accountNumber, String accountType) {
+    public AccountId(String accountNumber) {
         this.accountNumber = accountNumber;
     }
 
