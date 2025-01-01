@@ -13,7 +13,7 @@
          <children>
             <TableView fx:id="virementTableView" layoutY="-10.0" prefHeight="193.0" prefWidth="550.0">
               <columns>
-                <TableColumn fx:id="Datecolumn" prefWidth="125.0" text="Date" />
+                <TableColumn fx:id="dateColumn" prefWidth="125.0" text="Date" />
                 <TableColumn fx:id="destinataireColumn" prefWidth="125.0" text="Bénéficiaire" />
                   <TableColumn fx:id="montantColumn" prefWidth="115.0" text="Montant" />
                   <TableColumn fx:id="typeVirementColumn" prefWidth="75.0" text="Type" />
