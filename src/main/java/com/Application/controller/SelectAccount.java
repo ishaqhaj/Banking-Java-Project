@@ -7,9 +7,9 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
-import com.application.dao.impl.AccountDAOImpl;
-import com.application.model.Account;
-import com.application.util.SessionManager;
+import com.Application.dao.impl.AccountDAOImpl;
+import com.Application.model.Account;
+import com.Application.util.SessionManager;
 
 import java.util.Set;
 import java.util.function.Consumer;
