@@ -1,17 +1,20 @@
 package com.Application.controller;
 
-import com.Application.model.User;
-import com.Application.util.SessionManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import com.Application.model.Virement;
-import com.Application.service.VirementService;
-import com.Application.util.VirementXMLGenerator;
+
+import com.application.model.User;
+import com.application.model.Virement;
+import com.application.service.VirementService;
+import com.application.util.SessionManager;
+import com.application.util.VirementXMLGenerator;
 
 import java.math.BigDecimal;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class VirementSimple {
     @FXML
@@ -24,18 +27,21 @@ public class VirementSimple {
     private TextArea motifField;
     @FXML
     private ComboBox<String> paymentMethodBox;
+    
+    private static final Logger LOGGER = Logger.getLogger(VirementSimple.class.getName());
+    
     @FXML
     private void initialize() {
         currencyBox.getItems().addAll("MAD", "EUR", "USD");
         paymentMethodBox.getItems().addAll("SEPA", "PRPT", "SDVA");
-        User Beneficiary= SessionManager.getInstance().getSelectedBeneficiary();
-        beneficiaireField.setText(Beneficiary.getName());
+        User beneficiary= SessionManager.getInstance().getSelectedBeneficiary();
+        beneficiaireField.setText(beneficiary.getName());
     }
     @FXML
     public void validerVirement() {
         String amountText = amountField.getText();
         String currency = currencyBox.getValue();
-        String motif = motifField.getText(); // Champ facultatif
+        String motif = motifField.getText(); // Optional field
         String payMethod = paymentMethodBox.getValue();
 
         if (amountText.isEmpty() || currency == null) {
@@ -48,23 +54,20 @@ public class VirementSimple {
             try {
                 BigDecimal amount = BigDecimal.valueOf(Double.parseDouble(amountText));
 
-                // Créer un objet Virement
-                Virement virement = new Virement(amount, currency, motif,"simple" ,payMethod);
+                // Create a Virement object
+                Virement virement = new Virement(amount, currency, motif, "simple", payMethod);
                 VirementService virementService = new VirementService();
                 virementService.insertVirement(virement);
 
-                // Afficher une alerte de succès
+                // Generate XML for the virement
+                generateVirementXML(virement);
+
+                // Show success alert
                 Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                 successAlert.setTitle("Succès");
                 successAlert.setHeaderText(null);
                 successAlert.setContentText("Virement passé avec succès !");
                 successAlert.showAndWait();
-                try {
-                    VirementXMLGenerator.generateXMLVirementSimple(virement);
-                } catch (Exception ex) {
-                    System.out.println("Erreur lors de la génération du fxml");
-                    throw new RuntimeException(ex);
-                }
             } catch (NumberFormatException ex) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Erreur");
@@ -75,6 +78,18 @@ public class VirementSimple {
         }
     }
 
+    private void generateVirementXML(Virement virement) {
+        try {
+            VirementXMLGenerator.generateXMLVirementSimple(virement);
+        } catch (Exception ex) {
+        	LOGGER.log(Level.SEVERE, "Erreur lors de la génération du xml: " , ex);
+        }
+    }
 
-
+    
 }
+    
+
+
+
+
