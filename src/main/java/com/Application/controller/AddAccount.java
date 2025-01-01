@@ -5,11 +5,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import com.Application.dao.impl.AccountDAOImpl;
-import com.Application.dao.impl.BankDAOImpl;
-import com.Application.model.Account;
-import com.Application.model.Bank;
-import com.Application.util.SessionManager;
+
+import com.application.dao.impl.AccountDAOImpl;
+import com.application.dao.impl.BankDAOImpl;
+import com.application.model.Account;
+import com.application.model.Bank;
+import com.application.util.SessionManager;
 
 import java.math.BigDecimal;
 
@@ -21,7 +22,10 @@ public class AddAccount {
     @FXML
     private TextField bankField;
     @FXML
-    private TextField BICField;
+    private TextField bicField;
+    
+    private final static String error="Erreur";
+    
     @FXML
     public void initialize() {
         accountTypeComboBox.getItems().addAll(
@@ -40,7 +44,7 @@ public class AddAccount {
             accountType = accountType.substring(0, 4);
         }
         String bankName = bankField.getText();
-        String bic = BICField.getText();
+        String bic = bicField.getText();
         if (!isValidIBAN(accountNumber)) {
             return; // Arrêter si l'IBAN est invalide
         }
@@ -82,13 +86,13 @@ public class AddAccount {
         // Supprimer les espaces et vérifier la longueur minimale et maximale (ISO 13616: de 15 à 34 caractères)
         String sanitizedIban = iban.replaceAll("\\s+", "");
         if (sanitizedIban.length() < 15 || sanitizedIban.length() > 34) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "L'IBAN doit contenir entre 15 et 34 caractères.");
+            showAlert(Alert.AlertType.ERROR, error, "L'IBAN doit contenir entre 15 et 34 caractères.");
             return false;
         }
 
         // Vérifier que l'IBAN commence par deux lettres (le code pays) suivies de chiffres
         if (!sanitizedIban.matches("^[A-Z]{2}\\d{2}[A-Z0-9]+$")) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "L'IBAN doit commencer par un code pays valide (ex: FR, DE).");
+            showAlert(Alert.AlertType.ERROR, error, "L'IBAN doit commencer par un code pays valide (ex: FR, DE).");
             return false;
         }
 
@@ -109,11 +113,11 @@ public class AddAccount {
         try {
             BigDecimal ibanValue = new BigDecimal(numericIban.toString());
             if (ibanValue.remainder(BigDecimal.valueOf(97)).intValue() != 1) {
-                showAlert(Alert.AlertType.ERROR, "Erreur", "L'IBAN est invalide");
+                showAlert(Alert.AlertType.ERROR, error, "L'IBAN est invalide");
                 return false;
             }
         } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "L'IBAN contient des caractères non valides.");
+            showAlert(Alert.AlertType.ERROR, error, "L'IBAN contient des caractères non valides.");
             return false;
         }
 
