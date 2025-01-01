@@ -5,11 +5,15 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import com.Application.service.EmailService;
-import com.Application.service.PDFGenerator;
-import com.Application.service.UserService;
 
 import java.math.BigDecimal;
+
+import com.application.model.Account;
+import com.application.model.Address;
+import com.application.model.Bank;
+import com.application.service.EmailService;
+import com.application.service.PDFGenerator;
+import com.application.service.UserService;
 
 public class SignUp {
     @FXML
@@ -38,6 +42,9 @@ public class SignUp {
     private TextField bankField;
     @FXML
     private TextField bicField;
+    
+    private final static String error="Erreur";
+    
     @FXML
     private void initialize() {
         // Ajouter les éléments au ComboBox accountTypeComboBox
@@ -113,32 +120,34 @@ public class SignUp {
         String bank = bankField.getText();
         String bic = bicField.getText();
         if (name.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || idValue.isEmpty() || accountNumber.isEmpty() || bank.isEmpty()||bic.trim().isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "Veuillez remplir tous les champs.");
+            showAlert(Alert.AlertType.ERROR,error, "Veuillez remplir tous les champs.");
             return;
         }
         String nameValidationResult = isValidName(name);
         if (nameValidationResult != null) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", nameValidationResult);
+            showAlert(Alert.AlertType.ERROR, error, nameValidationResult);
             return;
         }
         if (!isValidEmail(email)) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "Adresse email invalide.");
+            showAlert(Alert.AlertType.ERROR, error, "Adresse email invalide.");
             return;
         }
         if (!password.equals(confirmPassword)) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "Les mots de passe ne correspondent pas.");
+            showAlert(Alert.AlertType.ERROR, error, "Les mots de passe ne correspondent pas.");
             return;
         }
         if (!isValidIBAN(accountNumber)) {
             return; // Arrêter si l'IBAN est invalide
         }
         try {
+        	Bank bankObject = new Bank(bank, bic);
+        	Account account=new Account(accountNumber,selectedAccountType,bankObject);
             final UserService userService = new UserService();
-            String userId = userService.createUser(idValue, name, password, email, address, city, postalCode, country, accountNumber, selectedAccountType, bank, bic);
+            String userId = userService.createUser(idValue, name, password, email, new Address(address, city, postalCode, country), account);
 
-            if (!userId.equals("Error")) {
+            if (!userId.equals(error)) {
                 showAlert(Alert.AlertType.INFORMATION, "Succès", "Compte crée avec succès.Veuillez vérifier votre boîte email pour obtenir votre identifiant");
-                String pdfPath = PDFGenerator.generateUserPdf(name, email, idValue, address, city, postalCode, country, accountNumber, selectedAccountType, bank, bic);
+                String pdfPath = PDFGenerator.generateUserPdf(name, email, idValue, new Address(address, city, postalCode, country), new Account(accountNumber, selectedAccountType, new Bank(bank, bic)));
                 // Envoyer l'email avec le PDF en pièce jointe
                 EmailService emailService = new EmailService();
                 emailService.sendEmail(email, userId, pdfPath);
@@ -146,10 +155,10 @@ public class SignUp {
                 nameField.getScene().getWindow().hide(); // Ferme la fenêtre actuelle
             }
             else {
-                showAlert(Alert.AlertType.ERROR, "Erreur", "Cet identifiant (CIN/Passeport) existe déjà. Veuillez réessayer avec un identifiant différent.");
+                showAlert(Alert.AlertType.ERROR, error, "Cet identifiant (CIN/Passeport) existe déjà. Veuillez réessayer avec un identifiant différent.");
             }
-        } catch (Exception error) {
-            error.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -172,13 +181,13 @@ public class SignUp {
         // Supprimer les espaces et vérifier la longueur minimale et maximale (ISO 13616: de 15 à 34 caractères)
         String sanitizedIban = iban.replaceAll("\\s+", "");
         if (sanitizedIban.length() < 15 || sanitizedIban.length() > 34) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "L'IBAN doit contenir entre 15 et 34 caractères.");
+            showAlert(Alert.AlertType.ERROR, error, "L'IBAN doit contenir entre 15 et 34 caractères.");
             return false;
         }
 
         // Vérifier que l'IBAN commence par deux lettres (le code pays) suivies de chiffres
         if (!sanitizedIban.matches("^[A-Z]{2}\\d{2}[A-Z0-9]+$")) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "L'IBAN doit commencer par un code pays valide (ex: FR, DE).");
+            showAlert(Alert.AlertType.ERROR, error, "L'IBAN doit commencer par un code pays valide (ex: FR, DE).");
             return false;
         }
 
@@ -199,11 +208,11 @@ public class SignUp {
         try {
             BigDecimal ibanValue = new BigDecimal(numericIban.toString());
             if (ibanValue.remainder(BigDecimal.valueOf(97)).intValue() != 1) {
-                showAlert(Alert.AlertType.ERROR, "Erreur", "L'IBAN est invalide");
+                showAlert(Alert.AlertType.ERROR, error, "L'IBAN est invalide");
                 return false;
             }
         } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "L'IBAN contient des caractères non valides.");
+            showAlert(Alert.AlertType.ERROR, error, "L'IBAN contient des caractères non valides.");
             return false;
         }
 
