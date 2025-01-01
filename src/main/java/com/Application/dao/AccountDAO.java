@@ -1,9 +1,9 @@
 package com.Application.dao;
 
-import com.Application.model.Account;
-
 import java.util.Map;
 import java.util.Set;
+
+import com.application.model.Account;
 
 public interface AccountDAO {
     public void insertAccount(Account account);
