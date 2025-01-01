@@ -168,7 +168,7 @@ Test avec JUnit
    
    Ces tests garantissent la fiabilité et la cohérence des fonctionnalités principales de l'application.
 
-####Premier Test avec SonarQube : Analyse de la Qualité et du Taux de Couverture de Code
+#### Premier Test avec SonarQube : Analyse de la Qualité et du Taux de Couverture de Code
 
       Suite au premier test de qualité avec SonarQube, voici une interprétation des résultats présentés dans l'image :
       
