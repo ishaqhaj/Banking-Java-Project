@@ -1,9 +1,13 @@
 package com.Application.dao.impl;
 
+import com.Application.dao.impl.AccountDAOImpl;
+import com.Application.dao.impl.UserDAOImpl;
 import com.Application.model.Account;
 import com.Application.model.Bank;
 import com.Application.model.User;
+import com.Application.model.Address;
 import com.Application.util.DatabaseConnection;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,9 +21,10 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class AccountDAOImplTest {
+class AccountDAOImplTest {
     private AccountDAOImpl accountDAO;
     private UserDAOImpl userDAO;
+    private Address address;
     private Bank testBank;
     private Account testAccount;
     private User testUser;
@@ -30,13 +35,14 @@ public class AccountDAOImplTest {
         userDAO = new UserDAOImpl();
         testBank = new Bank("CIH", "CIHMMAMC");
         testAccount = new Account("XK051212012345678906", "CACC", testBank);
-        testUser = new User("AB78899", "AX6578", "Albert Roben", "rtyyu234@", "rober@gmail.com", "Washington city build.14", "Washington", "10000", "US", testAccount);
+        address=new Address("Washington city build.14", "Washington", "10000", "US");
+        testUser = new User("AB78899", "AX6578", "Albert Roben", "rtyyu234@", "rober@gmail.com",address , testAccount);
         testAccount.setOwner(testUser);
         userDAO.insertUser(testUser);
     }
 
     @Test
-    public void insertAccountTest() {
+    void insertAccountTest() {
 
         // Insertion de l'account
         accountDAO.insertAccount(testAccount);
@@ -66,7 +72,7 @@ public class AccountDAOImplTest {
     }
 
     @Test
-    public void FindUserIdByAccountNumberTest() {
+    void FindUserIdByAccountNumberTest() {
         accountDAO.insertAccount(testAccount);
         String userId = accountDAO.findUserIdByAccountNumber(testAccount.getAccountNumber());
 
@@ -76,7 +82,7 @@ public class AccountDAOImplTest {
     }
 
     @Test
-    public void getAccountTest() {
+    void getAccountTest() {
         // Insertion du compte
         accountDAO.insertAccount(testAccount);
 
@@ -93,7 +99,7 @@ public class AccountDAOImplTest {
     }
 
     @Test
-    public void hasSingleAccountTest() {
+   void hasSingleAccountTest() {
         accountDAO.insertAccount(testAccount);
         boolean result = accountDAO.hasSingleAccount(testUser.getUserId());
         assertEquals(result, true, "L'utilisateur a pour le moment un seul compte La fonction hasSingleAccount doit retourner true");
@@ -107,7 +113,7 @@ public class AccountDAOImplTest {
     }
 
     @Test
-    public void getUserAccountTest() {
+    void getUserAccountTest() {
         accountDAO.insertAccount(testAccount);
         // Récupération du compte avec getUserAccount
         Account retrievedAccount = accountDAO.getUserAccount(testUser.getUserId());
@@ -122,7 +128,7 @@ public class AccountDAOImplTest {
     }
 
     @Test
-    public void getUserAccountsTest() {
+    void getUserAccountsTest() {
         accountDAO.insertAccount(testAccount);
         Account testAccount2 = new Account("DE89 4203 0043 6410 2400 06", "CACC", testBank);
         testAccount2.setOwner(testUser);
@@ -143,7 +149,7 @@ public class AccountDAOImplTest {
     }
 
     @Test
-    public void addBeneficiaryAccountTest() {
+    void addBeneficiaryAccountTest() {
         accountDAO.insertAccount(testAccount);
         Account testAccount2 = new Account("DE89 4203 0043 6410 2400 06", "CACC", testBank);
         testAccount2.setOwner(testUser);
@@ -177,7 +183,7 @@ public class AccountDAOImplTest {
     }
 
     @Test
-    public void getBeneficiariesTest() {
+    void getBeneficiariesTest() {
         // Insérer le compte principal
         accountDAO.insertAccount(testAccount);
 
@@ -188,7 +194,8 @@ public class AccountDAOImplTest {
         accountDAO.addBeneficiaryAccount(testAccount.getAccountNumber(), testAccount2.getAccountNumber());
 
         Account testAccount3 = new Account("AT62 2502 4070 4624 6822", "CACC", testBank);
-        User testUser2 = new User("BE5678", "BX3556", "Rozalita Martin", "5678889@@@@", "r.m@gmail.com", "Washington city build.20", "Washington", "10000", "US", testAccount3);
+        Address address1=new Address("Washington city build.20", "Washington", "10000", "US");
+        User testUser2 = new User("BE5678", "BX3556", "Rozalita Martin", "5678889@@@@", "r.m@gmail.com",address1, testAccount3);
         userDAO.insertUser(testUser2);
         testAccount3.setOwner(testUser2);
         accountDAO.insertAccount(testAccount3);
@@ -210,10 +217,11 @@ public class AccountDAOImplTest {
     }
 
     @Test
-    public void isBeneficiaryExistsTest() {
+    void isBeneficiaryExistsTest() {
         accountDAO.insertAccount(testAccount);
         Account testAccount2 = new Account("AT62 2502 4070 4624 6822", "CACC", testBank);
-        User testUser2 = new User("BE5678", "BX3556", "Rozalita Martin", "5678889@@@@", "r.m@gmail.com", "Washington city build.20", "Washington", "10000", "US", testAccount2);
+        Address address2=new Address("Washington city build.20", "Washington", "10000", "US");
+        User testUser2 = new User("BE5678", "BX3556", "Rozalita Martin", "5678889@@@@", "r.m@gmail.com", address2, testAccount2);
         userDAO.insertUser(testUser2);
         testAccount2.setOwner(testUser2);
         accountDAO.insertAccount(testAccount2);
