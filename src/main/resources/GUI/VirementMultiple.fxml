@@ -56,7 +56,7 @@
                </font>
             </Label>
             <DatePicker fx:id="datePicker" layoutX="188.0" layoutY="217.0" promptText="Sélectionner la date effective du virement" />
-            <Button layoutX="398.0" layoutY="249.0" mnemonicParsing="false" onAction="#AddBeneficiary" style="-fx-background-color: #D4A017; -fx-cursor: hand;" text="Ajouter">
+            <Button layoutX="398.0" layoutY="249.0" mnemonicParsing="false" onAction="#addBeneficiary" style="-fx-background-color: #D4A017; -fx-cursor: hand;" text="Ajouter">
                <font>
                   <Font name="Arial Bold" size="16.0" />
                </font>
