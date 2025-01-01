@@ -1,27 +1,26 @@
 package com.Application.controller;
 
-import com.Application.dao.impl.AccountDAOImpl;
-import com.Application.dao.impl.UserDAOImpl;
-import com.Application.model.Account;
-import com.Application.model.Virement;
-import com.Application.service.VirementService;
-import com.Application.util.SessionManager;
+import com.application.dao.impl.AccountDAOImpl;
+import com.application.dao.impl.UserDAOImpl;
+import com.application.model.Account;
+import com.application.model.Virement;
+import com.application.service.VirementService;
+import com.application.util.SessionManager;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public class History {
     @FXML
     private TableView<Virement> virementTableView;
     @FXML
-    private TableColumn<Virement, String> Datecolumn;
+    private TableColumn<Virement, String> dateColumn;
     @FXML
     private TableColumn<Virement, String> destinataireColumn;
     @FXML
@@ -45,7 +44,6 @@ public class History {
             Account creditorAccount = accountDAO.getAccount(creditorAccountNumber);
             if (creditorAccount != null) {
                 String creditorUserId = accountDAO.findUserIdByAccountNumber(creditorAccount.getAccountNumber());
-                String creditorName = userDAO.getUserNameById(creditorUserId);
                 virement.getCreditorAccount().setOwner(userDAO.getUser(creditorUserId));
             }
         }
@@ -54,7 +52,7 @@ public class History {
         virementTableView.setItems(FXCollections.observableArrayList(virements));
 
         // Configuration des colonnes
-        Datecolumn.setCellValueFactory(new PropertyValueFactory<>("timestamp"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("timestamp"));
 
         destinataireColumn.setCellValueFactory(cellData -> {
             String name = cellData.getValue().getCreditorAccount().getOwner().getName();
