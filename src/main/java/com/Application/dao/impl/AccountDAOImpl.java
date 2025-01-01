@@ -1,9 +1,9 @@
 package com.Application.dao.impl;
 
-import com.Application.dao.AccountDAO;
-import com.Application.model.Account;
-import com.Application.model.Bank;
-import com.Application.util.DatabaseConnection;
+import com.application.dao.AccountDAO;
+import com.application.model.Account;
+import com.application.model.Bank;
+import com.application.util.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,41 +13,46 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class AccountDAOImpl implements AccountDAO {
     private BankDAOImpl bankDAO;
+    private static final Logger LOGGER = Logger.getLogger(AccountDAOImpl.class.getName());
     // Constructeur pour injecter BankDAO
     public AccountDAOImpl() {
         this.bankDAO = new BankDAOImpl();
     }
 
-    public void insertAccount(Account account)  {
-        DatabaseConnection db=new DatabaseConnection();
-        try (Connection conn=db.getConnection()){
+    public void insertAccount(Account account) {
+        DatabaseConnection db = new DatabaseConnection();
+        try (Connection conn = db.getConnection();
+             PreparedStatement preparedStatement = conn.prepareStatement(
+                 "INSERT INTO accounts (account_number, account_type, bank_id, user_id) VALUES (?, ?, ?, ?)")) {
+            
             // Obtenir l'ID de la banque
             Integer bankId = bankDAO.getBankId(account.getBank());
-            String query = "INSERT INTO accounts (account_number, account_type, bank_id, user_id) VALUES (?, ?, ?, ?)";
-            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            
             preparedStatement.setString(1, account.getAccountNumber());
             preparedStatement.setString(2, account.getAccountType());
             preparedStatement.setInt(3, bankId); // Utiliser l'ID de la banque
             preparedStatement.setString(4, account.getOwner().getUserId()); // Utiliser l'ID utilisateur incrémenté
             preparedStatement.executeUpdate();
-        }
-        catch(SQLException e) {
-            System.out.println("Erreur connexion lors de l'insertion des données dans la table accounts");
+            
+        } catch (SQLException e) {
+        	LOGGER.log(Level.SEVERE, "Erreur connexion lors de l'insertion des données dans la table accounts: ");
             e.printStackTrace();
-        }
-        finally{
+        } finally {
             db.closeConnection();
         }
     }
+
     public String findUserIdByAccountNumber(String accountNumber)  {
         String query = "SELECT user_id FROM accounts WHERE account_number = ?";
         DatabaseConnection db=new DatabaseConnection();
-        try (Connection conn = db.getConnection()){
-             PreparedStatement preparedStatement = conn.prepareStatement(query);
+        try (Connection conn = db.getConnection();
+        	PreparedStatement preparedStatement = conn.prepareStatement(query);){
             preparedStatement.setString(1, accountNumber);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -55,7 +60,7 @@ public class AccountDAOImpl implements AccountDAO {
             }
         }
         catch(SQLException e) {
-            System.out.println("Erreur au niveau de la récupération de l'identifiant de l'utilisateur à partir du IBAN.");
+        	LOGGER.log(Level.SEVERE, "Erreur au niveau de la récupération de l'identifiant de l'utilisateur à partir du IBAN.");
             return null;
         }
         finally {
@@ -72,13 +77,12 @@ public class AccountDAOImpl implements AccountDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 Bank bank = bankDAO.getBank(resultSet.getInt("bank_id"));
-                Account account = new Account(accountNumber, resultSet.getString("account_type"), bank);
-                return account;
+                return new Account(accountNumber, resultSet.getString("account_type"), bank);
             }
             return null;
         }
         catch (SQLException e) {
-            System.out.println("Erreur connexion");
+        	LOGGER.log(Level.SEVERE, "Erreur connexion : ");
             e.printStackTrace();
             return null;
         }
@@ -103,7 +107,7 @@ public class AccountDAOImpl implements AccountDAO {
             return hasSingleAccount;
         }
         catch (SQLException e) {
-            System.err.println("Erreur lors de la vérification des comptes pour userId : " + userId);
+        	LOGGER.log(Level.SEVERE, "Erreur lors de la vérification des comptes pour userId : " + userId);
             e.printStackTrace();
             return hasSingleAccount;
         }
@@ -121,14 +125,13 @@ public class AccountDAOImpl implements AccountDAO {
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    Account account=getAccount(resultSet.getString("account_number"));
-                    return account;
+                    return getAccount(resultSet.getString("account_number"));
                 }
                 return null;
             }
 
         } catch (SQLException e) {
-            System.err.println("Erreur lors de la récupération des comptes pour userId : " + userId);
+        	LOGGER.log(Level.SEVERE, "Erreur lors de la récupération du compte pour userId : " + userId);
             e.printStackTrace();
             return null;
         }
@@ -152,7 +155,7 @@ public class AccountDAOImpl implements AccountDAO {
             }
             return accountNumbers;
         } catch (SQLException e) {
-            System.err.println("Erreur lors de la récupération des comptes pour userId : " + userId);
+        	LOGGER.log(Level.SEVERE, "Erreur lors de la récupération des comptes pour userId : " + userId);
             e.printStackTrace();
             return accountNumbers;
         }
@@ -164,8 +167,8 @@ public class AccountDAOImpl implements AccountDAO {
     public boolean addBeneficiaryAccount(String iban,String beneficiaryIban){
         String query = "INSERT INTO account_beneficiaries (user_account, beneficiary_account) VALUES (?, ?)";
         DatabaseConnection db=new DatabaseConnection();
-        try (Connection conn=db.getConnection()){
-            PreparedStatement preparedStatement = conn.prepareStatement(query);
+        try (Connection conn=db.getConnection();
+        	PreparedStatement preparedStatement = conn.prepareStatement(query)){
             preparedStatement.setString(1, iban);
             preparedStatement.setString(2, beneficiaryIban);
             preparedStatement.executeUpdate();
@@ -187,13 +190,10 @@ public class AccountDAOImpl implements AccountDAO {
             preparedStatement.setString(1, iban);
             preparedStatement.setString(2, beneficiayIban);
             ResultSet rs = preparedStatement.executeQuery();
-            if (rs.next()) {
-                return true;
-            }
-            return false;
+            return rs.next();
         }
         catch (SQLException e) {
-            System.out.println("Erreur lors de l ajout du compte du bénéficiare");
+        	LOGGER.log(Level.SEVERE, "Erreur lors de l ajout du compte du bénéficiare");
             e.printStackTrace();
             return false;
         }
@@ -221,7 +221,7 @@ public class AccountDAOImpl implements AccountDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Erreur lors de la récupération des bénéficiaires.");
+        	LOGGER.log(Level.SEVERE, "Erreur lors de la récupération des bénéficiaires.");
             e.printStackTrace();
         } finally {
             db.closeConnection();
