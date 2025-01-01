@@ -1,7 +1,7 @@
-package com.application.model;
+package com.Application.model;
 
 public class Address{
-	private String addressString;
+    private String addressString;
     private String city;
     private String postalCode;
     private String country;
