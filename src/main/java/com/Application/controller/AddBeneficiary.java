@@ -4,8 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
-import com.application.service.UserService;
-import com.application.util.SessionManager;
+import com.Application.service.UserService;
+import com.Application.util.SessionManager;
 
 public class AddBeneficiary {
     @FXML
