@@ -1,10 +1,10 @@
 package com.Application.controller;
 
-import com.application.model.User;
-import com.application.model.Virement;
-import com.application.service.VirementService;
-import com.application.util.SessionManager;
-import com.application.util.VirementXMLGenerator;
+import com.Application.model.User;
+import com.Application.model.Virement;
+import com.Application.service.VirementService;
+import com.Application.util.SessionManager;
+import com.Application.util.VirementXMLGenerator;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
