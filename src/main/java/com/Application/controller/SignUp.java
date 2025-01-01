@@ -8,12 +8,12 @@ import javafx.scene.control.TextField;
 
 import java.math.BigDecimal;
 
-import com.application.model.Account;
-import com.application.model.Address;
-import com.application.model.Bank;
-import com.application.service.EmailService;
-import com.application.service.PDFGenerator;
-import com.application.service.UserService;
+import com.Application.model.Account;
+import com.Application.model.Address;
+import com.Application.model.Bank;
+import com.Application.service.EmailService;
+import com.Application.service.PDFGenerator;
+import com.Application.service.UserService;
 
 public class SignUp {
     @FXML
