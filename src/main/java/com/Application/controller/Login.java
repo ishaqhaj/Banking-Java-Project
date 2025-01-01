@@ -9,10 +9,10 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import com.application.dao.impl.UserDAOImpl;
-import com.application.model.User;
-import com.application.service.UserService;
-import com.application.util.SessionManager;
+import com.Application.dao.impl.UserDAOImpl;
+import com.Application.model.User;
+import com.Application.service.UserService;
+import com.Application.util.SessionManager;
 
 import java.io.IOException;
 
