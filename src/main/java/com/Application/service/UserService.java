@@ -1,27 +1,26 @@
 package com.Application.service;
 
-
-
-
 import com.Application.dao.impl.AccountDAOImpl;
 import com.Application.dao.impl.BankDAOImpl;
 import com.Application.dao.impl.UserDAOImpl;
 import com.Application.model.Account;
-import com.Application.model.Bank;
+import com.Application.model.Address;
 import com.Application.model.User;
 import com.Application.util.SessionManager;
 
-
-import java.sql.SQLException;
+import java.security.SecureRandom;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class UserService {
+	private static final SecureRandom RANDOM = new SecureRandom();
     private BankDAOImpl bankDAO;
     private AccountDAOImpl accountDAO;
     private UserDAOImpl userDAO;
+    private static final Logger LOGGER = Logger.getLogger(UserService.class.getName());
 
     public UserService() {
         this.bankDAO=new BankDAOImpl();
@@ -30,30 +29,28 @@ public class UserService {
     }
 
     // Méthode pour créer un utilisateur
-    public String createUser(String idValue, String name, String password, String email, String address, String city, String postalCode, String country, String accountNumber, String accountType, String bankName, String bic) {
+    public String createUser(String idValue, String name, String password, String email, Address address, Account account) {
         try {
-            Bank bank = new Bank(bankName, bic);
-            bank=bankDAO.findBank(bank);
-            Account account=new Account(accountNumber,accountType,bank);
+            account.setBank(bankDAO.findBank(account.getBank())); 
             if (userDAO.isIdExist(idValue)) {
                 return "Error";
             }
             String userId = generateUniqueUserId();
-            User user=new User(idValue,userId,name,password,email,address,city,postalCode,country,account);
+            User user=new User(idValue,userId,name,password,email,address,account);
             userDAO.insertUser(user);
             account.setOwner(user);
             accountDAO.insertAccount(account);
             return userId;
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+        	LOGGER.log(Level.SEVERE, "Erreur lors de la création de l'utilisateur.", e);
             return "Error";
         }
     }
 
 
     // Méthode pour générer un identifiant utilisateur unique de 6 caractères
-    private String generateUniqueUserId() throws SQLException {
+    private String generateUniqueUserId(){
         String userId;
         boolean isUnique;
 
@@ -68,10 +65,9 @@ public class UserService {
     // Générer un identifiant aléatoire de 6 caractères
     private String generateRandomUserId() {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        Random random = new Random();
         StringBuilder userId = new StringBuilder(6);
         for (int i = 0; i < 6; i++) {
-            userId.append(characters.charAt(random.nextInt(characters.length())));
+            userId.append(characters.charAt(RANDOM.nextInt(characters.length())));
         }
         return userId.toString();
     }
@@ -79,7 +75,7 @@ public class UserService {
         // Utiliser le nouvel identifiant unique pour l'authentification
         return userDAO.authenticateUser(userId, password);
     }
-    public boolean addBeneficiary(String userId, String beneficiaryName, String accountNumber)  {
+    public boolean addBeneficiary(String beneficiaryName, String accountNumber)  {
         // Trouver l'ID utilisateur correspondant au numéro de compte
         String beneficiaryId = accountDAO.findUserIdByAccountNumber(accountNumber);
         if (beneficiaryId == null) {
@@ -91,9 +87,9 @@ public class UserService {
         if (!fetchedName.equals(beneficiaryName)) {
             throw new IllegalArgumentException("Le nom ne correspond pas au compte donné.");
         }
-        Account SelectedAccount= SessionManager.getInstance().getSelectedAccount();
+        Account selectedAccount= SessionManager.getInstance().getSelectedAccount();
         // Ajouter le bénéficiaire
-        return accountDAO.addBeneficiaryAccount(SelectedAccount.getAccountNumber(),accountNumber);
+        return accountDAO.addBeneficiaryAccount(selectedAccount.getAccountNumber(),accountNumber);
     }
     public Map<String, String> getUserBeneficiaries(String iban) {
         return accountDAO.getBeneficiaries(iban);
