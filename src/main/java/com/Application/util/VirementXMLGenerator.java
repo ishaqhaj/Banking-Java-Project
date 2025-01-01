@@ -1,9 +1,11 @@
 package com.Application.util;
 
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
+
 import com.Application.dao.impl.AccountDAOImpl;
 import com.Application.dao.impl.UserDAOImpl;
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.Marshaller;
 import com.Application.model.User;
 import com.Application.model.Virement;
 import com.Application.model.iso20022.*;
@@ -17,18 +19,29 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.logging.Logger;
 import java.util.List;
 
 public class VirementXMLGenerator {
-
-    public static void generateXMLVirementSimple(Virement virement) throws Exception {
+	private static final String DATETIMEPATTERN="yyyy-MM-dd'T'HH:mm:ss";
+	private static final String TIMESTAMPPATTERN="yyyyMMdd_HHmmss";
+	private static final String AMOUNTPATTERN="#0.00";
+	private static final String XMLIDENTIFICATOR="urn:iso:std:iso:20022:tech:xsd:pain.001.001.03";
+	
+	private static final Logger LOGGER = Logger.getLogger(VirementXMLGenerator.class.getName());
+	
+	private VirementXMLGenerator() {
+        throw new UnsupportedOperationException("Cette classe ne peut pas être instanciée.");
+    }
+	
+    public static void generateXMLVirementSimple(Virement virement) throws JAXBException {
         // Créer le message principal
         CstmrCdtTrfInitn cstmrCdtTrfInitn = new CstmrCdtTrfInitn();
 
         // Configurer les en-têtes de groupe
         GroupHeader groupHeader = new GroupHeader();
         groupHeader.setMessageId(virement.getEndToEndId());
-        groupHeader.setCreationDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")));
+        groupHeader.setCreationDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATETIMEPATTERN)));
         groupHeader.setNumberOfTransactions("1");
         groupHeader.setControlSum(virement.getAmount()); // Format avec 2 décimales
 
@@ -53,7 +66,7 @@ public class VirementXMLGenerator {
         paymentInformation.setDebtor(debtor);
 
         CashAccount debtorAccount = new CashAccount();
-        debtorAccount.setId(new AccountId(virement.getDebtorAccount().getAccountNumber(), "IBAN"));
+        debtorAccount.setId(new AccountId(virement.getDebtorAccount().getAccountNumber()));
         paymentInformation.setDebtorAccount(debtorAccount);
 
         FinancialInstitution debtorAgent = new FinancialInstitution();
@@ -67,7 +80,7 @@ public class VirementXMLGenerator {
         paymentInformation.setCreditor(creditor);
 
         CashAccount creditorAccount = new CashAccount();
-        creditorAccount.setId(new AccountId(virement.getCreditorAccount().getAccountNumber(), "IBAN"));
+        creditorAccount.setId(new AccountId(virement.getCreditorAccount().getAccountNumber()));
         paymentInformation.setCreditorAccount(creditorAccount);
 
         FinancialInstitution creditorAgent = new FinancialInstitution();
@@ -78,7 +91,7 @@ public class VirementXMLGenerator {
         Amount amount = new Amount();
         amount.setCurrency(virement.getCurrency());
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
-        DecimalFormat decimalFormat = new DecimalFormat("#0.00", symbols);
+        DecimalFormat decimalFormat = new DecimalFormat(AMOUNTPATTERN, symbols);
         String formattedAmount = decimalFormat.format(virement.getAmount());
 
         amount.setValue(formattedAmount);
@@ -99,7 +112,7 @@ public class VirementXMLGenerator {
         // Créer le document avec namespace
         Document document = new Document();
         document.setCstmrCdtTrfInitn(cstmrCdtTrfInitn);
-        document.setNamespace("urn:iso:std:iso:20022:tech:xsd:pain.001.001.03");
+        document.setNamespace(XMLIDENTIFICATOR);
 
         // Générer le XML
         JAXBContext context = JAXBContext.newInstance(Document.class);
@@ -107,7 +120,7 @@ public class VirementXMLGenerator {
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
         // Générer un timestamp pour le fichier
-        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATETIMEPATTERN));
 
         // Chemin où sauvegarder le fichier XML
         String outputDirectory = "src/main/java/com/Application/Transactions_XML/VirementSimple/";
@@ -122,8 +135,8 @@ public class VirementXMLGenerator {
         // Créez le fichier et sauvegardez-y le XML
         File outputFile = new File(outputDirectory + fileName);
         marshaller.marshal(document, outputFile);
-
-        System.out.println("Fichier XML généré avec succès : " + outputFile.getAbsolutePath());
+        
+        LOGGER.info("Fichier XML généré avec succès : " + outputFile.getAbsolutePath());
     }
 
     public static void generateXMLVirementMultiple(List<Virement> virements) throws Exception {
@@ -138,7 +151,7 @@ public class VirementXMLGenerator {
         // Configurer les en-têtes de groupe
         GroupHeader groupHeader = new GroupHeader();
         groupHeader.setMessageId(generateMessageId());
-        groupHeader.setCreationDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")));
+        groupHeader.setCreationDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATETIMEPATTERN)));
         groupHeader.setNumberOfTransactions(String.valueOf(virements.size()));
 
         // Calculer le total des montants pour ControlSum
@@ -168,7 +181,7 @@ public class VirementXMLGenerator {
 
             // Compte du débiteur
             CashAccount debtorAccount = new CashAccount();
-            debtorAccount.setId(new AccountId(virement.getDebtorAccount().getAccountNumber(), "IBAN"));
+            debtorAccount.setId(new AccountId(virement.getDebtorAccount().getAccountNumber()));
             paymentInformation.setDebtorAccount(debtorAccount);
 
             // Créancier
@@ -180,14 +193,14 @@ public class VirementXMLGenerator {
 
             // Compte du créancier
             CashAccount creditorAccount = new CashAccount();
-            creditorAccount.setId(new AccountId(virement.getCreditorAccount().getAccountNumber(), "IBAN"));
+            creditorAccount.setId(new AccountId(virement.getCreditorAccount().getAccountNumber()));
             paymentInformation.setCreditorAccount(creditorAccount);
 
             // Montant
             Amount amount = new Amount();
             amount.setCurrency(virement.getCurrency());
             DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
-            DecimalFormat decimalFormat = new DecimalFormat("#0.00", symbols);
+            DecimalFormat decimalFormat = new DecimalFormat(AMOUNTPATTERN, symbols);
             String formattedAmount = decimalFormat.format(virement.getAmount());
 
             amount.setValue(formattedAmount);
@@ -210,7 +223,7 @@ public class VirementXMLGenerator {
         // Créer le document avec namespace
         Document document = new Document();
         document.setCstmrCdtTrfInitn(cstmrCdtTrfInitn);
-        document.setNamespace("urn:iso:std:iso:20022:tech:xsd:pain.001.001.03");
+        document.setNamespace(XMLIDENTIFICATOR);
 
         // Générer le XML
         JAXBContext context = JAXBContext.newInstance(Document.class);
@@ -219,7 +232,7 @@ public class VirementXMLGenerator {
 
         // Chemin pour sauvegarder le fichier XML
         String outputDirectory = "src/main/java/com/Application/Transactions_XML/VirementMultiple/";
-        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATETIMEPATTERN));
         String fileName = "VirementMultiple_" + timestamp + ".xml";
 
         // Assurez-vous que le répertoire existe
@@ -247,7 +260,7 @@ public class VirementXMLGenerator {
         // Configurer les en-têtes de groupe
         GroupHeader groupHeader = new GroupHeader();
         groupHeader.setMessageId(generateMessageId());
-        groupHeader.setCreationDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")));
+        groupHeader.setCreationDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATETIMEPATTERN)));
         groupHeader.setNumberOfTransactions(String.valueOf(virements.size()));
 
         // Calculer le total des montants pour ControlSum
@@ -277,7 +290,7 @@ public class VirementXMLGenerator {
 
             // Compte du débiteur
             CashAccount debtorAccount = new CashAccount();
-            debtorAccount.setId(new AccountId(virement.getDebtorAccount().getAccountNumber(), "IBAN"));
+            debtorAccount.setId(new AccountId(virement.getDebtorAccount().getAccountNumber()));
             paymentInformation.setDebtorAccount(debtorAccount);
 
             // Créancier
@@ -289,14 +302,14 @@ public class VirementXMLGenerator {
 
             // Compte du créancier
             CashAccount creditorAccount = new CashAccount();
-            creditorAccount.setId(new AccountId(virement.getCreditorAccount().getAccountNumber(), "IBAN"));
+            creditorAccount.setId(new AccountId(virement.getCreditorAccount().getAccountNumber()));
             paymentInformation.setCreditorAccount(creditorAccount);
 
             // Montant
             Amount amount = new Amount();
             amount.setCurrency(virement.getCurrency());
             DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
-            DecimalFormat decimalFormat = new DecimalFormat("#0.00", symbols);
+            DecimalFormat decimalFormat = new DecimalFormat(AMOUNTPATTERN, symbols);
             String formattedAmount = decimalFormat.format(virement.getAmount());
 
             amount.setValue(formattedAmount);
@@ -319,7 +332,7 @@ public class VirementXMLGenerator {
         // Créer le document avec namespace
         Document document = new Document();
         document.setCstmrCdtTrfInitn(cstmrCdtTrfInitn);
-        document.setNamespace("urn:iso:std:iso:20022:tech:xsd:pain.001.001.03");
+        document.setNamespace(XMLIDENTIFICATOR);
 
         // Générer le XML
         JAXBContext context = JAXBContext.newInstance(Document.class);
@@ -328,7 +341,7 @@ public class VirementXMLGenerator {
 
         // Chemin pour sauvegarder le fichier XML
         String outputDirectory = "src/main/java/com/Application/Transactions_XML/VirementDeMasse/";
-        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern(TIMESTAMPPATTERN));
         String fileName = "VirementDeMasse_" + timestamp + ".xml";
 
         // Assurez-vous que le répertoire existe
@@ -345,14 +358,14 @@ public class VirementXMLGenerator {
     }
 
     private static String generateMessageId() {
-        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern(TIMESTAMPPATTERN));
         String uniquePart = UUID.randomUUID().toString().replace("-", "").substring(0, 8);
         return "MSG_" + timestamp + "_" + uniquePart;
     }
 
     public static String generatePaymentInformationId(String userId) {
         // Obtenir l'heure actuelle au format ISO 8601 compact (année, mois, jour, heure, minute, seconde)
-        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern(TIMESTAMPPATTERN));
 
         // Générer un UUID aléatoire pour assurer l'unicité
         String uniquePart = UUID.randomUUID().toString().replace("-", "").substring(0, 8);
@@ -366,7 +379,7 @@ public class VirementXMLGenerator {
     }
     public static String generateInstructionId(String userId) {
         // Obtenir l'horodatage actuel au format compact (ISO 8601)
-        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern(TIMESTAMPPATTERN));
 
         // Générer un UUID aléatoire pour assurer l'unicité
         String uniquePart = UUID.randomUUID().toString().replace("-", "").substring(0, 8);
