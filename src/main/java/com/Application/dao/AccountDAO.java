@@ -3,7 +3,7 @@ package com.Application.dao;
 import java.util.Map;
 import java.util.Set;
 
-import com.application.model.Account;
+import com.Application.model.Account;
 
 public interface AccountDAO {
     public void insertAccount(Account account);
