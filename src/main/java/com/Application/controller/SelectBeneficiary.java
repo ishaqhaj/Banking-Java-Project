@@ -1,6 +1,5 @@
 package com.Application.controller;
 
-import com.Application.model.Account;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -8,11 +7,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import com.Application.dao.impl.AccountDAOImpl;
-import com.Application.dao.impl.UserDAOImpl;
-import com.Application.model.User;
-import com.Application.service.UserService;
-import com.Application.util.SessionManager;
+
+import com.application.dao.impl.AccountDAOImpl;
+import com.application.dao.impl.UserDAOImpl;
+import com.application.model.Account;
+import com.application.model.User;
+import com.application.service.UserService;
+import com.application.util.SessionManager;
 
 import java.util.Map;
 import java.util.function.Consumer;
@@ -32,10 +33,10 @@ public class SelectBeneficiary {
 
     @FXML
     public void initialize() {
-        String SelectedAccount = SessionManager.getInstance().getSelectedAccount().getAccountNumber();
+        String selectedAccount = SessionManager.getInstance().getSelectedAccount().getAccountNumber();
         // Charger les bénéficiaires via UserService
         UserService userService = new UserService();
-        Map<String, String> beneficiaries = userService.getUserBeneficiaries(SelectedAccount);
+        Map<String, String> beneficiaries = userService.getUserBeneficiaries(selectedAccount);
         if(!beneficiaries.isEmpty()) {
             group = new ToggleGroup();
             VBox beneficiaryContainer = new VBox(10); // Espacement vertical entre les boutons radio
@@ -87,7 +88,7 @@ public class SelectBeneficiary {
             SessionManager.getInstance().setSelectedAccountBeneficiary(accountDAO.getAccount(iban));
             Account selectedAccount=SessionManager.getInstance().getSelectedAccount();
             if(!accountDAO.isBeneficiaryExists(selectedAccount.getAccountNumber(),iban)) {
-                boolean success = accountDAO.addBeneficiaryAccount(selectedAccount.getAccountNumber(), iban);
+                accountDAO.addBeneficiaryAccount(selectedAccount.getAccountNumber(), iban);
             }
             if (redirection != null) {
                 redirection.accept(beneficiary); // Exécute la redirection
@@ -110,16 +111,13 @@ public class SelectBeneficiary {
         RadioButton selectedRadioButton = (RadioButton) group.getSelectedToggle();
 
         if (selectedRadioButton != null) {
-            // Récupérer la clé (nom du bénéficiaire)
-            String beneficiaryName = selectedRadioButton.getText();
-
             // Récupérer la valeur (IBAN) depuis UserData
             String beneficiaryIBAN = (String) selectedRadioButton.getUserData();
             UserDAOImpl userDAO = new UserDAOImpl();
             AccountDAOImpl accountDAO = new AccountDAOImpl();
             String beneficiaryId=accountDAO.findUserIdByAccountNumber(beneficiaryIBAN);
-            User SelectedBeneficiary = userDAO.getUser(beneficiaryId);
-            SessionManager.getInstance().setSelectedBeneficiary(SelectedBeneficiary);
+            User selectedBeneficiary = userDAO.getUser(beneficiaryId);
+            SessionManager.getInstance().setSelectedBeneficiary(selectedBeneficiary);
             Account beneficiaryAccount=accountDAO.getAccount(beneficiaryIBAN);
             SessionManager.getInstance().setSelectedAccountBeneficiary(beneficiaryAccount);
             if (redirection != null) {
