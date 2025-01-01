@@ -1,9 +1,12 @@
 package com.Application.dao.impl;
 
+import com.Application.dao.impl.UserDAOImpl;
 import com.Application.model.Account;
+import com.Application.model.Address;
 import com.Application.model.Bank;
 import com.Application.model.User;
 import com.Application.util.DatabaseConnection;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,20 +18,21 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class UserDAOImplTest {
+class UserDAOImplTest {
     UserDAOImpl userDAO;
     User testUser;
 
     @BeforeEach
-    public void setUp(){
+    void setUp(){
         userDAO = new UserDAOImpl();
         Bank testBank = new Bank("CIH", "CIHMMAMC");
         Account testAccount = new Account("XK051212012345678906", "CACC", testBank);
-        testUser = new User("AB78899", "AX6578", "Albert Roben", "rtyyu234@", "rober@gmail.com", "Washington city build.14", "Washington", "10000", "US", testAccount);
+        Address address=new Address("Washington city build.14", "Washington", "10000", "US");
+        testUser = new User("AB78899", "AX6578", "Albert Roben", "rtyyu234@", "rober@gmail.com", address, testAccount);
     }
 
     @Test
-    public void isIdExistTest(){
+    void isIdExistTest(){
         userDAO.insertUser(testUser);
         boolean exists=userDAO.isIdExist("AB78899");
         assertEquals(true,exists,"Cet identifiant d'identité doit être existant.");
@@ -39,7 +43,7 @@ public class UserDAOImplTest {
     }
 
     @Test
-    public void insertUserTest() {
+    void insertUserTest() {
         userDAO.insertUser(testUser);
         String query = "SELECT  name, password, email, cin_or_passport, address, city, postal_code, country FROM users WHERE user_id = ?";
         DatabaseConnection db = new DatabaseConnection();
@@ -56,17 +60,17 @@ public class UserDAOImplTest {
                 String retrievedCinOrPassport = resultSet.getString("cin_or_passport");
                 String retrievedAddress = resultSet.getString("address");
                 String retrievedCity = resultSet.getString("city");
-                String retrievedPostal_code = resultSet.getString("postal_code");
+                String retrievedPostalCode = resultSet.getString("postal_code");
                 String retrievedCountry = resultSet.getString("country");
                 // Assertions pour vérifier les données
                 assertEquals(testUser.getName(), retrievedName);
                 assertEquals(testUser.getPassword(), retrievedPassword);
                 assertEquals(testUser.getEmail(), retrievedEmail);
                 assertEquals(testUser.getIdValue(), retrievedCinOrPassport);
-                assertEquals(testUser.getAddress(), retrievedAddress);
-                assertEquals(testUser.getCity(), retrievedCity);
-                assertEquals(testUser.getPostalCode(), retrievedPostal_code);
-                assertEquals(testUser.getCountry(), retrievedCountry);
+                assertEquals(testUser.getAddress().getAddress(), retrievedAddress);
+                assertEquals(testUser.getAddress().getCity(), retrievedCity);
+                assertEquals(testUser.getAddress().getPostalCode(), retrievedPostalCode);
+                assertEquals(testUser.getAddress().getCountry(), retrievedCountry);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -76,7 +80,7 @@ public class UserDAOImplTest {
     }
 
     @Test
-    public void isUserIdUniqueTest(){
+    void isUserIdUniqueTest(){
         userDAO.insertUser(testUser);
         boolean exists=userDAO.isUserIdUnique(testUser.getUserId());
         assertEquals(false,exists,"Cet Id existe déjà.");
@@ -85,7 +89,7 @@ public class UserDAOImplTest {
     }
 
     @Test
-    public void authenticateUserTest(){
+    void authenticateUserTest(){
         userDAO.insertUser(testUser);
         boolean isAuthenticated=userDAO.authenticateUser(testUser.getUserId(), testUser.getPassword());
         assertEquals(true,isAuthenticated,"Cet utiliisateur doit être connecté pour le moment.");
@@ -95,21 +99,21 @@ public class UserDAOImplTest {
     }
 
     @Test
-    public void getUserTest(){
+    void getUserTest(){
         userDAO.insertUser(testUser);
         User userResult=userDAO.getUser(testUser.getUserId());
         assertEquals(testUser.getName(), userResult.getName());
         assertEquals(testUser.getPassword(), userResult.getPassword());
         assertEquals(testUser.getEmail(), userResult.getEmail());
         assertEquals(testUser.getIdValue(), userResult.getIdValue());
-        assertEquals(testUser.getAddress(), userResult.getAddress());
-        assertEquals(testUser.getCity(), userResult.getCity());
-        assertEquals(testUser.getPostalCode(), userResult.getPostalCode());
-        assertEquals(testUser.getCountry(), userResult.getCountry());
+        assertEquals(testUser.getAddress().getAddress(), userResult.getAddress().getAddress());
+        assertEquals(testUser.getAddress().getCity(), userResult.getAddress().getCity());
+        assertEquals(testUser.getAddress().getPostalCode(), userResult.getAddress().getPostalCode());
+        assertEquals(testUser.getAddress().getCountry(), userResult.getAddress().getCountry());
     }
 
     @Test
-    public void getUserNameByIdTest(){
+    void getUserNameByIdTest(){
         userDAO.insertUser(testUser);
         String retrievedName=userDAO.getUserNameById(testUser.getUserId());
         assertEquals(testUser.getName(),retrievedName);
