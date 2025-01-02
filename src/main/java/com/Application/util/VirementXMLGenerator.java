@@ -120,7 +120,7 @@ public class VirementXMLGenerator {
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
         // Générer un timestamp pour le fichier
-        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATETIMEPATTERN));
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ss"));
 
         // Chemin où sauvegarder le fichier XML
         String outputDirectory = "src/main/java/com/Application/Transactions_XML/VirementSimple/";
@@ -232,7 +232,7 @@ public class VirementXMLGenerator {
 
         // Chemin pour sauvegarder le fichier XML
         String outputDirectory = "src/main/java/com/Application/Transactions_XML/VirementMultiple/";
-        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATETIMEPATTERN));
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ss"));
         String fileName = "VirementMultiple_" + timestamp + ".xml";
 
         // Assurez-vous que le répertoire existe
@@ -341,7 +341,7 @@ public class VirementXMLGenerator {
 
         // Chemin pour sauvegarder le fichier XML
         String outputDirectory = "src/main/java/com/Application/Transactions_XML/VirementDeMasse/";
-        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern(TIMESTAMPPATTERN));
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ss"));
         String fileName = "VirementDeMasse_" + timestamp + ".xml";
 
         // Assurez-vous que le répertoire existe
